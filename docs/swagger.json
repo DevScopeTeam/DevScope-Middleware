@@ -1,0 +1,502 @@
+{
+    "swagger": "2.0",
+    "info": {
+        "description": "DevScope中间件（DevScope-Middleware）是一个基于 Fiber 的 RESTful API 服务，用于提供DevScope（DevScope）的后端服务。\n注意，有 🦸 标识的接口需要管理员权限才能访问。",
+        "title": "DevScope中间件",
+        "contact": {},
+        "version": "v1.0.0"
+    },
+    "host": "127.0.0.1:9000",
+    "basePath": "/",
+    "paths": {
+        "/barrage/add": {
+            "post": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
+                "description": "添加Barrage",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "弹幕管理"
+                ],
+                "summary": "添加Barrage",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "视频UUID",
+                        "name": "video_uuid",
+                        "in": "query",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
+                        "description": "弹幕内容",
+                        "name": "content",
+                        "in": "query",
+                        "required": true
+                    },
+                    {
+                        "type": "integer",
+                        "description": "弹幕秒数",
+                        "name": "second",
+                        "in": "query",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/model.OperationResp"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/model.OperationResp"
+                        }
+                    }
+                }
+            }
+        },
+        "/barrage/count": {
+            "get": {
+                "description": "获取Barrage数量",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "弹幕管理"
+                ],
+                "summary": "获取Barrage数量",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "视频UUID",
+                        "name": "video_uuid",
+                        "in": "query",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/model.BarrageCountResp"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/model.OperationResp"
+                        }
+                    }
+                }
+            }
+        },
+        "/barrage/get": {
+            "get": {
+                "description": "获取Barrage",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "弹幕管理"
+                ],
+                "summary": "获取Barrage",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "弹幕UUID",
+                        "name": "uuid",
+                        "in": "query",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/model.BarrageResp"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/model.OperationResp"
+                        }
+                    }
+                }
+            }
+        },
+        "/barrage/list": {
+            "get": {
+                "description": "获取Barrage列表",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "弹幕管理"
+                ],
+                "summary": "获取Barrage列表",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "视频UUID",
+                        "name": "video_uuid",
+                        "in": "query",
+                        "required": true
+                    },
+                    {
+                        "type": "integer",
+                        "description": "页数",
+                        "name": "page",
+                        "in": "query"
+                    },
+                    {
+                        "type": "integer",
+                        "description": "每页数量",
+                        "name": "page_size",
+                        "in": "query"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/model.BarrageListResp"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/model.OperationResp"
+                        }
+                    }
+                }
+            }
+        },
+        "/barrage/recent_list": {
+            "get": {
+                "description": "获取最近的Barrage列表",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "弹幕管理"
+                ],
+                "summary": "获取最近的Barrage列表",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "视频UUID",
+                        "name": "video_uuid",
+                        "in": "query",
+                        "required": true
+                    },
+                    {
+                        "type": "integer",
+                        "description": "弹幕秒数",
+                        "name": "second",
+                        "in": "query",
+                        "required": true
+                    },
+                    {
+                        "type": "integer",
+                        "description": "几秒内的",
+                        "name": "limit",
+                        "in": "query"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/model.BarrageListResp"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/model.OperationResp"
+                        }
+                    }
+                }
+            }
+        },
+        "/github/user/info": {
+            "get": {
+                "description": "获取开发者基本信息",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Github"
+                ],
+                "summary": "获取开发者基本信息",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Github用户名",
+                        "name": "username",
+                        "in": "query",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/github.UserResp"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/model.OperationResp"
+                        }
+                    }
+                }
+            }
+        }
+    },
+    "definitions": {
+        "github.User": {
+            "type": "object",
+            "properties": {
+                "avatar_url": {
+                    "type": "string"
+                },
+                "bio": {
+                    "type": "string"
+                },
+                "blog": {
+                    "type": "string"
+                },
+                "collaborators": {
+                    "type": "integer"
+                },
+                "company": {
+                    "type": "string"
+                },
+                "created_at": {
+                    "type": "string"
+                },
+                "disk_usage": {
+                    "type": "integer"
+                },
+                "email": {
+                    "type": "string"
+                },
+                "events_url": {
+                    "type": "string"
+                },
+                "followers": {
+                    "type": "integer"
+                },
+                "followers_url": {
+                    "type": "string"
+                },
+                "following": {
+                    "type": "integer"
+                },
+                "following_url": {
+                    "type": "string"
+                },
+                "gists_url": {
+                    "type": "string"
+                },
+                "gravatar_id": {
+                    "type": "string"
+                },
+                "hireable": {
+                    "type": "boolean"
+                },
+                "html_url": {
+                    "type": "string"
+                },
+                "id": {
+                    "type": "integer"
+                },
+                "location": {
+                    "type": "string"
+                },
+                "login": {
+                    "type": "string"
+                },
+                "name": {
+                    "type": "string"
+                },
+                "node_id": {
+                    "type": "string"
+                },
+                "organizations_url": {
+                    "type": "string"
+                },
+                "owned_private_repos": {
+                    "type": "integer"
+                },
+                "private_gists": {
+                    "type": "integer"
+                },
+                "public_gists": {
+                    "type": "integer"
+                },
+                "public_repos": {
+                    "type": "integer"
+                },
+                "received_events_url": {
+                    "type": "string"
+                },
+                "repos_url": {
+                    "type": "string"
+                },
+                "site_admin": {
+                    "type": "boolean"
+                },
+                "starred_url": {
+                    "type": "string"
+                },
+                "subscriptions_url": {
+                    "type": "string"
+                },
+                "total_private_repos": {
+                    "type": "integer"
+                },
+                "two_factor_authentication": {
+                    "type": "boolean"
+                },
+                "type": {
+                    "type": "string"
+                },
+                "updated_at": {
+                    "type": "string"
+                },
+                "url": {
+                    "type": "string"
+                }
+            }
+        },
+        "github.UserResp": {
+            "type": "object",
+            "properties": {
+                "code": {
+                    "type": "integer"
+                },
+                "user": {
+                    "$ref": "#/definitions/github.User"
+                }
+            }
+        },
+        "model.Barrage": {
+            "type": "object",
+            "required": [
+                "content",
+                "second",
+                "timestamp",
+                "user_uuid",
+                "uuid",
+                "video_uuid"
+            ],
+            "properties": {
+                "content": {
+                    "type": "string"
+                },
+                "second": {
+                    "type": "integer"
+                },
+                "timestamp": {
+                    "type": "integer"
+                },
+                "user_uuid": {
+                    "type": "string"
+                },
+                "uuid": {
+                    "type": "string"
+                },
+                "video_uuid": {
+                    "type": "string"
+                }
+            }
+        },
+        "model.BarrageCountResp": {
+            "type": "object",
+            "properties": {
+                "code": {
+                    "type": "integer"
+                },
+                "count": {
+                    "type": "integer"
+                }
+            }
+        },
+        "model.BarrageListResp": {
+            "type": "object",
+            "properties": {
+                "barrage_list": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/model.Barrage"
+                    }
+                },
+                "code": {
+                    "type": "integer"
+                },
+                "total": {
+                    "type": "integer"
+                }
+            }
+        },
+        "model.BarrageResp": {
+            "type": "object",
+            "properties": {
+                "barrage": {
+                    "$ref": "#/definitions/model.Barrage"
+                },
+                "code": {
+                    "type": "integer"
+                }
+            }
+        },
+        "model.OperationResp": {
+            "type": "object",
+            "properties": {
+                "code": {
+                    "type": "integer"
+                },
+                "msg": {
+                    "type": "string"
+                }
+            }
+        }
+    },
+    "securityDefinitions": {
+        "ApiKeyAuth": {
+            "type": "apiKey",
+            "name": "Authorization",
+            "in": "header"
+        }
+    }
+}

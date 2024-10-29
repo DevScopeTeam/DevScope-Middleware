@@ -1,0 +1,7 @@
+mysql:
+  DSN: "DevScope:YIDzjy2414@tcp(rm-uf6i75n9ql15gi1or6o.mysql.rds.aliyuncs.com:3306)/DevScope?charset=utf8mb4&parseTime=True&loc=Local"
+
+QINIU:
+  access_key: R1weO56kS2kZK6BWEelAGaEXirAXKPAOjZ_OoYqk
+  secret_key: 6igpxhFmCVjjWALG8xfxi_MfSHQKkXcHlBS31wgA
+  bucket: DevScope

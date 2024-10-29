@@ -1,0 +1,145 @@
+package method
+
+import (
+	"DevScope-Middleware/config"
+	github_model "DevScope-Middleware/model/github"
+	"encoding/json"
+	"fmt"
+	"io"
+	"log"
+	"net/http"
+)
+
+// GitHub API 基础 URL
+const apiURL = "https://api.github.com"
+
+// 生成 HTTP 请求
+func makeRequest(endpoint string) ([]byte, error) {
+	client := &http.Client{}
+	req, err := http.NewRequest("GET", apiURL+endpoint, nil)
+	if err != nil {
+		return nil, err
+	}
+
+	// 设置 Token 认证 (如果有)
+	if config.GithubToken != "" {
+		req.Header.Set("Authorization", "token "+config.GithubToken)
+	}
+
+	// 发起请求
+	resp, err := client.Do(req)
+	if err != nil {
+		return nil, err
+	}
+	defer resp.Body.Close()
+
+	// 检查 HTTP 状态码
+	if resp.StatusCode != 200 {
+		return nil, fmt.Errorf("GitHub API returned status code %d", resp.StatusCode)
+	}
+
+	// 读取响应数据
+	body, err := io.ReadAll(resp.Body)
+	if err != nil {
+		return nil, err
+	}
+
+	return body, nil
+}
+
+// 获取开发者基本信息
+func GetGithuUserInfo(username string) (github_model.User, error) {
+	endpoint := fmt.Sprintf("/users/%s", username)
+	data, err := makeRequest(endpoint)
+	if err != nil {
+		log.Fatalf("Error fetching user info: %v", err)
+	}
+
+	// 解析并展示数据
+	var user github_model.User
+	if err := json.Unmarshal(data, &user); err != nil {
+		log.Fatalf("Error parsing user info: %v", err)
+	}
+	fmt.Println("User Info:", user)
+	return user, nil
+}
+
+// 获取项目贡献者
+func getRepoContributors(owner, repo string) {
+	endpoint := fmt.Sprintf("/repos/%s/%s/contributors", owner, repo)
+	data, err := makeRequest(endpoint)
+	if err != nil {
+		log.Fatalf("Error fetching contributors: %v", err)
+	}
+
+	// 解析并展示数据
+	var contributors []map[string]interface{}
+	if err := json.Unmarshal(data, &contributors); err != nil {
+		log.Fatalf("Error parsing contributors: %v", err)
+	}
+	fmt.Println("Contributors:", contributors)
+}
+
+// 获取开发者活动数据
+func getUserEvents(username string) {
+	endpoint := fmt.Sprintf("/users/%s/events", username)
+	data, err := makeRequest(endpoint)
+	if err != nil {
+		log.Fatalf("Error fetching user events: %v", err)
+	}
+
+	// 解析并展示数据
+	var events []map[string]interface{}
+	if err := json.Unmarshal(data, &events); err != nil {
+		log.Fatalf("Error parsing user events: %v", err)
+	}
+	fmt.Println("User Events:", events)
+}
+
+// 获取仓库和语言偏好
+func getUserRepos(username string) {
+	endpoint := fmt.Sprintf("/users/%s/repos", username)
+	data, err := makeRequest(endpoint)
+	if err != nil {
+		log.Fatalf("Error fetching user repos: %v", err)
+	}
+
+	// 解析并展示数据
+	var repos []map[string]interface{}
+	if err := json.Unmarshal(data, &repos); err != nil {
+		log.Fatalf("Error parsing user repos: %v", err)
+	}
+	fmt.Println("User Repositories:", repos)
+}
+
+// 获取开发者拉取请求
+func getUserPullRequests(owner, repo, username string) {
+	endpoint := fmt.Sprintf("/repos/%s/%s/pulls?state=all&author=%s", owner, repo, username)
+	data, err := makeRequest(endpoint)
+	if err != nil {
+		log.Fatalf("Error fetching pull requests: %v", err)
+	}
+
+	// 解析并展示数据
+	var pulls []map[string]interface{}
+	if err := json.Unmarshal(data, &pulls); err != nil {
+		log.Fatalf("Error parsing pull requests: %v", err)
+	}
+	fmt.Println("Pull Requests:", pulls)
+}
+
+// 获取开发者提交的 Issues
+func getUserIssues(username string) {
+	endpoint := fmt.Sprintf("/search/issues?q=author:%s", username)
+	data, err := makeRequest(endpoint)
+	if err != nil {
+		log.Fatalf("Error fetching user issues: %v", err)
+	}
+
+	// 解析并展示数据
+	var issues map[string]interface{}
+	if err := json.Unmarshal(data, &issues); err != nil {
+		log.Fatalf("Error parsing user issues: %v", err)
+	}
+	fmt.Println("User Issues:", issues)
+}
