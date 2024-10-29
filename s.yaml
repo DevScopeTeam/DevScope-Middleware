@@ -17,8 +17,8 @@ services:
     props: # 组件的属性值
       region: ${vars.region} # 关于变量的使用方法，可以参考：https://www.serverless-devs.com/serverless-devs/yaml#变量赋值
       service:
-        name: KeChuang-Service
-        description: "KeChuang Studio Service"
+        name: DevScope-Service
+        description: "DevScope Service"
       function:
         name: {{ ProjectName }}
         description: 'hello from {{ ProjectName }}'
