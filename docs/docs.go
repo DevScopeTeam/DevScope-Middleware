@@ -15,6 +15,44 @@ const docTemplate = `{
     "host": "{{.Host}}",
     "basePath": "{{.BasePath}}",
     "paths": {
+        "/github/user/events": {
+            "get": {
+                "description": "获取开发者活动数据",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Github"
+                ],
+                "summary": "获取开发者活动数据",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Github用户名",
+                        "name": "username",
+                        "in": "query",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/github.EventListResp"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/model.OperationResp"
+                        }
+                    }
+                }
+            }
+        },
         "/github/user/info": {
             "get": {
                 "description": "获取开发者基本信息",
@@ -52,10 +90,825 @@ const docTemplate = `{
                     }
                 }
             }
+        },
+        "/github/user/repos": {
+            "get": {
+                "description": "获取仓库和语言偏好",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Github"
+                ],
+                "summary": "获取仓库和语言偏好",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Github用户名",
+                        "name": "username",
+                        "in": "query",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/github.RepoListResp"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/model.OperationResp"
+                        }
+                    }
+                }
+            }
         }
     },
     "definitions": {
-        "github.User": {
+        "github.Actor": {
+            "type": "object",
+            "properties": {
+                "avatar_url": {
+                    "type": "string"
+                },
+                "display_login": {
+                    "type": "string"
+                },
+                "gravatar_id": {
+                    "type": "string"
+                },
+                "id": {
+                    "type": "integer"
+                },
+                "login": {
+                    "type": "string"
+                },
+                "url": {
+                    "type": "string"
+                }
+            }
+        },
+        "github.Author": {
+            "type": "object",
+            "properties": {
+                "email": {
+                    "type": "string"
+                },
+                "name": {
+                    "type": "string"
+                }
+            }
+        },
+        "github.Commit": {
+            "type": "object",
+            "properties": {
+                "author": {
+                    "$ref": "#/definitions/github.Author"
+                },
+                "distinct": {
+                    "type": "boolean"
+                },
+                "message": {
+                    "type": "string"
+                },
+                "sha": {
+                    "type": "string"
+                },
+                "url": {
+                    "type": "string"
+                }
+            }
+        },
+        "github.Event": {
+            "type": "object",
+            "properties": {
+                "actor": {
+                    "$ref": "#/definitions/github.Actor"
+                },
+                "created_at": {
+                    "type": "string"
+                },
+                "id": {
+                    "type": "string"
+                },
+                "payload": {
+                    "$ref": "#/definitions/github.Payload"
+                },
+                "public": {
+                    "type": "boolean"
+                },
+                "repo": {
+                    "$ref": "#/definitions/github.Repository"
+                },
+                "type": {
+                    "type": "string"
+                }
+            }
+        },
+        "github.EventListResp": {
+            "type": "object",
+            "properties": {
+                "code": {
+                    "type": "integer"
+                },
+                "list": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/github.Event"
+                    }
+                }
+            }
+        },
+        "github.License": {
+            "type": "object",
+            "properties": {
+                "html_url": {
+                    "type": "string"
+                },
+                "key": {
+                    "type": "string"
+                },
+                "name": {
+                    "type": "string"
+                },
+                "node_id": {
+                    "type": "string"
+                },
+                "spdx_id": {
+                    "type": "string"
+                },
+                "url": {
+                    "type": "string"
+                }
+            }
+        },
+        "github.Owner": {
+            "type": "object",
+            "properties": {
+                "avatar_url": {
+                    "type": "string"
+                },
+                "events_url": {
+                    "type": "string"
+                },
+                "followers_url": {
+                    "type": "string"
+                },
+                "following_url": {
+                    "type": "string"
+                },
+                "gists_url": {
+                    "type": "string"
+                },
+                "gravatar_id": {
+                    "type": "string"
+                },
+                "html_url": {
+                    "type": "string"
+                },
+                "id": {
+                    "type": "integer"
+                },
+                "login": {
+                    "type": "string"
+                },
+                "node_id": {
+                    "type": "string"
+                },
+                "organizations_url": {
+                    "type": "string"
+                },
+                "received_events_url": {
+                    "type": "string"
+                },
+                "repos_url": {
+                    "type": "string"
+                },
+                "site_admin": {
+                    "type": "boolean"
+                },
+                "starred_url": {
+                    "type": "string"
+                },
+                "subscriptions_url": {
+                    "type": "string"
+                },
+                "type": {
+                    "type": "string"
+                },
+                "url": {
+                    "type": "string"
+                }
+            }
+        },
+        "github.Payload": {
+            "type": "object",
+            "properties": {
+                "action": {
+                    "type": "string"
+                },
+                "before": {
+                    "type": "string"
+                },
+                "commits": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/github.Commit"
+                    }
+                },
+                "distinct_size": {
+                    "type": "integer"
+                },
+                "head": {
+                    "type": "string"
+                },
+                "push_id": {
+                    "type": "integer"
+                },
+                "ref": {
+                    "type": "string"
+                },
+                "size": {
+                    "type": "integer"
+                }
+            }
+        },
+        "github.Permissions": {
+            "type": "object",
+            "properties": {
+                "admin": {
+                    "type": "boolean"
+                },
+                "pull": {
+                    "type": "boolean"
+                },
+                "push": {
+                    "type": "boolean"
+                }
+            }
+        },
+        "github.Repo": {
+            "type": "object",
+            "properties": {
+                "allow_auto_merge": {
+                    "type": "boolean"
+                },
+                "allow_forking": {
+                    "type": "boolean"
+                },
+                "allow_merge_commit": {
+                    "type": "boolean"
+                },
+                "allow_rebase_merge": {
+                    "type": "boolean"
+                },
+                "allow_squash_merge": {
+                    "type": "boolean"
+                },
+                "archive_url": {
+                    "type": "string"
+                },
+                "archived": {
+                    "type": "boolean"
+                },
+                "assignees_url": {
+                    "type": "string"
+                },
+                "blobs_url": {
+                    "type": "string"
+                },
+                "branches_url": {
+                    "type": "string"
+                },
+                "clone_url": {
+                    "type": "string"
+                },
+                "collaborators_url": {
+                    "type": "string"
+                },
+                "comments_url": {
+                    "type": "string"
+                },
+                "commits_url": {
+                    "type": "string"
+                },
+                "compare_url": {
+                    "type": "string"
+                },
+                "contents_url": {
+                    "type": "string"
+                },
+                "contributors_url": {
+                    "type": "string"
+                },
+                "created_at": {
+                    "type": "string"
+                },
+                "default_branch": {
+                    "type": "string"
+                },
+                "delete_branch_on_merge": {
+                    "type": "boolean"
+                },
+                "deployments_url": {
+                    "type": "string"
+                },
+                "description": {
+                    "type": "string"
+                },
+                "disabled": {
+                    "type": "boolean"
+                },
+                "downloads_url": {
+                    "type": "string"
+                },
+                "events_url": {
+                    "type": "string"
+                },
+                "fork": {
+                    "type": "boolean"
+                },
+                "forks": {
+                    "type": "integer"
+                },
+                "forks_count": {
+                    "type": "integer"
+                },
+                "forks_url": {
+                    "type": "string"
+                },
+                "full_name": {
+                    "type": "string"
+                },
+                "git_commits_url": {
+                    "type": "string"
+                },
+                "git_refs_url": {
+                    "type": "string"
+                },
+                "git_tags_url": {
+                    "type": "string"
+                },
+                "git_url": {
+                    "type": "string"
+                },
+                "has_discussions": {
+                    "type": "boolean"
+                },
+                "has_downloads": {
+                    "type": "boolean"
+                },
+                "has_issues": {
+                    "type": "boolean"
+                },
+                "has_pages": {
+                    "type": "boolean"
+                },
+                "has_projects": {
+                    "type": "boolean"
+                },
+                "has_wiki": {
+                    "type": "boolean"
+                },
+                "homepage": {
+                    "type": "string"
+                },
+                "html_url": {
+                    "type": "string"
+                },
+                "id": {
+                    "type": "integer"
+                },
+                "is_template": {
+                    "type": "boolean"
+                },
+                "issue_comment_url": {
+                    "type": "string"
+                },
+                "issue_events_url": {
+                    "type": "string"
+                },
+                "issues_url": {
+                    "type": "string"
+                },
+                "keys_url": {
+                    "type": "string"
+                },
+                "labels_url": {
+                    "type": "string"
+                },
+                "languages_url": {
+                    "type": "string"
+                },
+                "license": {
+                    "$ref": "#/definitions/github.License"
+                },
+                "merges_url": {
+                    "type": "string"
+                },
+                "milestones_url": {
+                    "type": "string"
+                },
+                "mirror_url": {
+                    "type": "string"
+                },
+                "name": {
+                    "type": "string"
+                },
+                "network_count": {
+                    "type": "integer"
+                },
+                "node_id": {
+                    "type": "string"
+                },
+                "notifications_url": {
+                    "type": "string"
+                },
+                "open_issues": {
+                    "type": "integer"
+                },
+                "open_issues_count": {
+                    "type": "integer"
+                },
+                "organization": {
+                    "$ref": "#/definitions/github.Owner"
+                },
+                "owner": {
+                    "$ref": "#/definitions/github.Owner"
+                },
+                "parent": {
+                    "$ref": "#/definitions/github.Repo"
+                },
+                "permissions": {
+                    "$ref": "#/definitions/github.Permissions"
+                },
+                "private": {
+                    "type": "boolean"
+                },
+                "pulls_url": {
+                    "type": "string"
+                },
+                "pushed_at": {
+                    "type": "string"
+                },
+                "releases_url": {
+                    "type": "string"
+                },
+                "size": {
+                    "type": "integer"
+                },
+                "source": {
+                    "$ref": "#/definitions/github.Repo"
+                },
+                "ssh_url": {
+                    "type": "string"
+                },
+                "stargazers_count": {
+                    "type": "integer"
+                },
+                "stargazers_url": {
+                    "type": "string"
+                },
+                "statuses_url": {
+                    "type": "string"
+                },
+                "subscribers_count": {
+                    "type": "integer"
+                },
+                "subscribers_url": {
+                    "type": "string"
+                },
+                "subscription_url": {
+                    "type": "string"
+                },
+                "tags_url": {
+                    "type": "string"
+                },
+                "teams_url": {
+                    "type": "string"
+                },
+                "temp_clone_token": {
+                    "type": "string"
+                },
+                "template_repository": {
+                    "$ref": "#/definitions/github.TemplateRepository"
+                },
+                "topics": {
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    }
+                },
+                "trees_url": {
+                    "type": "string"
+                },
+                "updated_at": {
+                    "type": "string"
+                },
+                "url": {
+                    "type": "string"
+                },
+                "visibility": {
+                    "type": "string"
+                },
+                "watchers": {
+                    "type": "integer"
+                },
+                "watchers_count": {
+                    "type": "integer"
+                }
+            }
+        },
+        "github.RepoListResp": {
+            "type": "object",
+            "properties": {
+                "code": {
+                    "type": "integer"
+                },
+                "list": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/github.Repo"
+                    }
+                }
+            }
+        },
+        "github.Repository": {
+            "type": "object",
+            "properties": {
+                "id": {
+                    "type": "integer"
+                },
+                "name": {
+                    "type": "string"
+                },
+                "url": {
+                    "type": "string"
+                }
+            }
+        },
+        "github.TemplateRepository": {
+            "type": "object",
+            "properties": {
+                "allow_auto_merge": {
+                    "type": "boolean"
+                },
+                "allow_merge_commit": {
+                    "type": "boolean"
+                },
+                "allow_rebase_merge": {
+                    "type": "boolean"
+                },
+                "allow_squash_merge": {
+                    "type": "boolean"
+                },
+                "archive_url": {
+                    "type": "string"
+                },
+                "archived": {
+                    "type": "boolean"
+                },
+                "assignees_url": {
+                    "type": "string"
+                },
+                "blobs_url": {
+                    "type": "string"
+                },
+                "branches_url": {
+                    "type": "string"
+                },
+                "clone_url": {
+                    "type": "string"
+                },
+                "collaborators_url": {
+                    "type": "string"
+                },
+                "comments_url": {
+                    "type": "string"
+                },
+                "commits_url": {
+                    "type": "string"
+                },
+                "compare_url": {
+                    "type": "string"
+                },
+                "contents_url": {
+                    "type": "string"
+                },
+                "contributors_url": {
+                    "type": "string"
+                },
+                "created_at": {
+                    "type": "string"
+                },
+                "default_branch": {
+                    "type": "string"
+                },
+                "delete_branch_on_merge": {
+                    "type": "boolean"
+                },
+                "deployments_url": {
+                    "type": "string"
+                },
+                "description": {
+                    "type": "string"
+                },
+                "disabled": {
+                    "type": "boolean"
+                },
+                "downloads_url": {
+                    "type": "string"
+                },
+                "events_url": {
+                    "type": "string"
+                },
+                "fork": {
+                    "type": "boolean"
+                },
+                "forks": {
+                    "type": "integer"
+                },
+                "forks_count": {
+                    "type": "integer"
+                },
+                "forks_url": {
+                    "type": "string"
+                },
+                "full_name": {
+                    "type": "string"
+                },
+                "git_commits_url": {
+                    "type": "string"
+                },
+                "git_refs_url": {
+                    "type": "string"
+                },
+                "git_tags_url": {
+                    "type": "string"
+                },
+                "git_url": {
+                    "type": "string"
+                },
+                "has_downloads": {
+                    "type": "boolean"
+                },
+                "has_issues": {
+                    "type": "boolean"
+                },
+                "has_pages": {
+                    "type": "boolean"
+                },
+                "has_projects": {
+                    "type": "boolean"
+                },
+                "has_wiki": {
+                    "type": "boolean"
+                },
+                "homepage": {
+                    "type": "string"
+                },
+                "html_url": {
+                    "type": "string"
+                },
+                "id": {
+                    "type": "integer"
+                },
+                "is_template": {
+                    "type": "boolean"
+                },
+                "issue_comment_url": {
+                    "type": "string"
+                },
+                "issue_events_url": {
+                    "type": "string"
+                },
+                "issues_url": {
+                    "type": "string"
+                },
+                "keys_url": {
+                    "type": "string"
+                },
+                "labels_url": {
+                    "type": "string"
+                },
+                "language": {},
+                "languages_url": {
+                    "type": "string"
+                },
+                "license": {
+                    "$ref": "#/definitions/github.License"
+                },
+                "merges_url": {
+                    "type": "string"
+                },
+                "milestones_url": {
+                    "type": "string"
+                },
+                "mirror_url": {
+                    "type": "string"
+                },
+                "name": {
+                    "type": "string"
+                },
+                "network_count": {
+                    "type": "integer"
+                },
+                "node_id": {
+                    "type": "string"
+                },
+                "notifications_url": {
+                    "type": "string"
+                },
+                "open_issues": {
+                    "type": "integer"
+                },
+                "open_issues_count": {
+                    "type": "integer"
+                },
+                "owner": {
+                    "$ref": "#/definitions/github.Owner"
+                },
+                "permissions": {
+                    "$ref": "#/definitions/github.Permissions"
+                },
+                "private": {
+                    "type": "boolean"
+                },
+                "pulls_url": {
+                    "type": "string"
+                },
+                "pushed_at": {
+                    "type": "string"
+                },
+                "releases_url": {
+                    "type": "string"
+                },
+                "size": {
+                    "type": "integer"
+                },
+                "ssh_url": {
+                    "type": "string"
+                },
+                "stargazers_count": {
+                    "type": "integer"
+                },
+                "stargazers_url": {
+                    "type": "string"
+                },
+                "statuses_url": {
+                    "type": "string"
+                },
+                "subscribers_count": {
+                    "type": "integer"
+                },
+                "subscribers_url": {
+                    "type": "string"
+                },
+                "subscription_url": {
+                    "type": "string"
+                },
+                "tags_url": {
+                    "type": "string"
+                },
+                "teams_url": {
+                    "type": "string"
+                },
+                "temp_clone_token": {
+                    "type": "string"
+                },
+                "topics": {
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    }
+                },
+                "trees_url": {
+                    "type": "string"
+                },
+                "updated_at": {
+                    "type": "string"
+                },
+                "url": {
+                    "type": "string"
+                },
+                "visibility": {
+                    "type": "string"
+                },
+                "watchers": {
+                    "type": "integer"
+                },
+                "watchers_count": {
+                    "type": "integer"
+                }
+            }
+        },
+        "github.UserInfo": {
             "type": "object",
             "properties": {
                 "avatar_url": {
@@ -178,7 +1031,7 @@ const docTemplate = `{
                     "type": "integer"
                 },
                 "user": {
-                    "$ref": "#/definitions/github.User"
+                    "$ref": "#/definitions/github.UserInfo"
                 }
             }
         },
@@ -210,7 +1063,7 @@ var SwaggerInfo = &swag.Spec{
 	BasePath:         "/",
 	Schemes:          []string{},
 	Title:            "DevScope中间件",
-	Description:      "DevScope中间件（DevScope-Middleware）是一个基于 Fiber 的 RESTful API 服务，用于提供DevScope（DevScope）的后端服务。\n注意，有 🦸 标识的接口需要管理员权限才能访问。",
+	Description:      "DevScope中间件（DevScope-Middleware）是一个基于 Fiber 的 RESTful API 服务，用于提供DevScope的后端服务。\n注意，有 🦸 标识的接口需要管理员权限才能访问。",
 	InfoInstanceName: "swagger",
 	SwaggerTemplate:  docTemplate,
 	LeftDelim:        "{{",

@@ -9,7 +9,7 @@ import (
 
 //	@title						DevScope中间件
 //	@version					v1.0.0
-//	@description				DevScope中间件（DevScope-Middleware）是一个基于 Fiber 的 RESTful API 服务，用于提供DevScope（DevScope）的后端服务。
+//	@description				DevScope中间件（DevScope-Middleware）是一个基于 Fiber 的 RESTful API 服务，用于提供DevScope的后端服务。
 //	@description				注意，有 🦸 标识的接口需要管理员权限才能访问。
 //	@host						127.0.0.1:9000
 //	@BasePath					/

@@ -48,7 +48,7 @@ func makeRequest(endpoint string) ([]byte, error) {
 }
 
 // 获取开发者基本信息
-func GetGithuUserInfo(username string) (github_model.User, error) {
+func GetGithuUserInfo(username string) (github_model.UserInfo, error) {
 	endpoint := fmt.Sprintf("/users/%s", username)
 	data, err := makeRequest(endpoint)
 	if err != nil {
@@ -56,32 +56,16 @@ func GetGithuUserInfo(username string) (github_model.User, error) {
 	}
 
 	// 解析并展示数据
-	var user github_model.User
+	var user github_model.UserInfo
 	if err := json.Unmarshal(data, &user); err != nil {
 		log.Fatalf("Error parsing user info: %v", err)
 	}
-	fmt.Println("User Info:", user)
+
 	return user, nil
 }
 
-// 获取项目贡献者
-func getRepoContributors(owner, repo string) {
-	endpoint := fmt.Sprintf("/repos/%s/%s/contributors", owner, repo)
-	data, err := makeRequest(endpoint)
-	if err != nil {
-		log.Fatalf("Error fetching contributors: %v", err)
-	}
-
-	// 解析并展示数据
-	var contributors []map[string]interface{}
-	if err := json.Unmarshal(data, &contributors); err != nil {
-		log.Fatalf("Error parsing contributors: %v", err)
-	}
-	fmt.Println("Contributors:", contributors)
-}
-
 // 获取开发者活动数据
-func getUserEvents(username string) {
+func GetUserEvents(username string) ([]github_model.Event, error) {
 	endpoint := fmt.Sprintf("/users/%s/events", username)
 	data, err := makeRequest(endpoint)
 	if err != nil {
@@ -89,15 +73,16 @@ func getUserEvents(username string) {
 	}
 
 	// 解析并展示数据
-	var events []map[string]interface{}
+	var events []github_model.Event
 	if err := json.Unmarshal(data, &events); err != nil {
 		log.Fatalf("Error parsing user events: %v", err)
 	}
-	fmt.Println("User Events:", events)
+
+	return events, nil
 }
 
 // 获取仓库和语言偏好
-func getUserRepos(username string) {
+func GetUserRepos(username string) ([]github_model.Repo, error) {
 	endpoint := fmt.Sprintf("/users/%s/repos", username)
 	data, err := makeRequest(endpoint)
 	if err != nil {
@@ -105,15 +90,16 @@ func getUserRepos(username string) {
 	}
 
 	// 解析并展示数据
-	var repos []map[string]interface{}
+	var repos []github_model.Repo
 	if err := json.Unmarshal(data, &repos); err != nil {
 		log.Fatalf("Error parsing user repos: %v", err)
 	}
-	fmt.Println("User Repositories:", repos)
+
+	return repos, nil
 }
 
 // 获取开发者拉取请求
-func getUserPullRequests(owner, repo, username string) {
+func GetUserPullRequests(owner, repo, username string) {
 	endpoint := fmt.Sprintf("/repos/%s/%s/pulls?state=all&author=%s", owner, repo, username)
 	data, err := makeRequest(endpoint)
 	if err != nil {
@@ -129,7 +115,7 @@ func getUserPullRequests(owner, repo, username string) {
 }
 
 // 获取开发者提交的 Issues
-func getUserIssues(username string) {
+func GetUserIssues(username string) {
 	endpoint := fmt.Sprintf("/search/issues?q=author:%s", username)
 	data, err := makeRequest(endpoint)
 	if err != nil {
@@ -142,4 +128,39 @@ func getUserIssues(username string) {
 		log.Fatalf("Error parsing user issues: %v", err)
 	}
 	fmt.Println("User Issues:", issues)
+}
+
+// 获取开源项目
+func GetRepo(owner, repo string) (github_model.Repo, error) {
+	endpoint := fmt.Sprintf("/repos/%s/%s", owner, repo)
+	data, err := makeRequest(endpoint)
+	if err != nil {
+		log.Fatalf("Error fetching repo info: %v", err)
+	}
+
+	// 解析并展示数据
+	var repoInfo github_model.Repo
+	if err := json.Unmarshal(data, &repoInfo); err != nil {
+		log.Fatalf("Error parsing repo info: %v", err)
+	}
+
+	return repoInfo, nil
+}
+
+// 获取项目贡献者
+func GetRepoContributors(owner, repo string) ([]github_model.UserInfo, error) {
+	endpoint := fmt.Sprintf("/repos/%s/%s/contributors", owner, repo)
+	data, err := makeRequest(endpoint)
+	if err != nil {
+		log.Fatalf("Error fetching contributors: %v", err)
+	}
+
+	// 解析并展示数据
+	var contributors []github_model.UserInfo
+	if err := json.Unmarshal(data, &contributors); err != nil {
+		log.Fatalf("Error parsing contributors: %v", err)
+	}
+	fmt.Println("Contributors:", contributors)
+
+	return contributors, nil
 }

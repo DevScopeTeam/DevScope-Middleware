@@ -4,7 +4,7 @@ import (
 	"time"
 )
 
-type User struct {
+type UserInfo struct {
 	AvatarURL               string    `json:"avatar_url"`
 	EventsURL               string    `json:"events_url"`
 	FollowersURL            string    `json:"followers_url"`
@@ -45,6 +45,6 @@ type User struct {
 }
 
 type UserResp struct {
-	Code int  `json:"code"`
-	User User `json:"user"`
+	Code     int      `json:"code"`
+	UserInfo UserInfo `json:"user"`
 }
