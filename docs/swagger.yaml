@@ -598,6 +598,15 @@ definitions:
       user:
         $ref: '#/definitions/github.UserInfo'
     type: object
+  model.DevScoreResp:
+    properties:
+      code:
+        type: integer
+      score:
+        type: number
+      user_info:
+        $ref: '#/definitions/github.UserInfo'
+    type: object
   model.OperationResp:
     properties:
       code:
@@ -688,6 +697,31 @@ paths:
       summary: 获取仓库和语言偏好
       tags:
       - Github
+  /score/get:
+    get:
+      consumes:
+      - application/json
+      description: 获取开发者评分
+      parameters:
+      - description: Github用户名
+        in: query
+        name: username
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/model.DevScoreResp'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/model.OperationResp'
+      summary: 获取开发者评分
+      tags:
+      - Score
 securityDefinitions:
   ApiKeyAuth:
     in: header

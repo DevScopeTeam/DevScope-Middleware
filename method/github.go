@@ -161,7 +161,64 @@ func GetRepoContributors(owner, repo string) ([]github_model.UserInfo, error) {
 	if err := json.Unmarshal(data, &contributors); err != nil {
 		return nil, err
 	}
-	fmt.Println("Contributors:", contributors)
+	// fmt.Println("Contributors:", contributors)
 
 	return contributors, nil
+}
+
+// 计算开发者评分
+func CalculateDeveloperScore(username string) (float64, github_model.UserInfo, error) {
+	// 权重设置
+	const (
+		weightContribution = 0.4
+		weightProject      = 0.4
+		weightActivity     = 0.2
+		// weightTechStack    = 0.1
+	)
+
+	user, err := GetGithuUserInfo(username)
+	if err != nil {
+		return 0, github_model.UserInfo{}, err
+	}
+
+	// 获取开发者的活动数据
+	events, err := GetUserEvents(username)
+	if err != nil {
+		return 0, user, err
+	}
+
+	// 获取开发者的仓库信息
+	repos, err := GetUserRepos(username)
+	if err != nil {
+		return 0, user, err
+	}
+
+	// 计算贡献度
+	contributionScore := 0.0
+	for _, repo := range repos {
+		fmt.Println(repo.Owner.Login, repo.Name)
+		contributors, err := GetRepoContributors(repo.Owner.Login, repo.Name)
+		if err != nil {
+			continue
+		}
+		for _, contributor := range contributors {
+			if contributor.Login == username {
+				contributionScore += float64(contributor.Collaborators)
+			}
+		}
+	}
+
+	// 计算项目重要性
+	projectScore := 0.0
+	for _, repo := range repos {
+		projectScore += float64(repo.StargazersCount + repo.ForksCount)
+	}
+
+	// 计算活跃度
+	activityScore := float64(len(events))
+
+	// 综合评分
+	totalScore := weightContribution*contributionScore + weightProject*projectScore + weightActivity*activityScore
+
+	return totalScore, user, nil
 }

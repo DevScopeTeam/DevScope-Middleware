@@ -128,6 +128,44 @@ const docTemplate = `{
                     }
                 }
             }
+        },
+        "/score/get": {
+            "get": {
+                "description": "获取开发者评分",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Score"
+                ],
+                "summary": "获取开发者评分",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Github用户名",
+                        "name": "username",
+                        "in": "query",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/model.DevScoreResp"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/model.OperationResp"
+                        }
+                    }
+                }
+            }
         }
     },
     "definitions": {
@@ -1031,6 +1069,20 @@ const docTemplate = `{
                     "type": "integer"
                 },
                 "user": {
+                    "$ref": "#/definitions/github.UserInfo"
+                }
+            }
+        },
+        "model.DevScoreResp": {
+            "type": "object",
+            "properties": {
+                "code": {
+                    "type": "integer"
+                },
+                "score": {
+                    "type": "number"
+                },
+                "user_info": {
                     "$ref": "#/definitions/github.UserInfo"
                 }
             }

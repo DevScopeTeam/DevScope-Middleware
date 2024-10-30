@@ -15,10 +15,14 @@ func regiserService(app *fiber.App) {
 
 	// 注册路由
 	github := app.Group("/github")
+	score := app.Group("/score")
 
 	// Github User
 	github_user := github.Group("/user")
 	github_user.Get("/info", handler.GetDeveloperInfoHandler)
 	github_user.Get("/repos", handler.GetUserReposHandler)
 	github_user.Get("/events", handler.GetUserEventsHandler)
+
+	// Score
+	score.Get("/get", handler.GetUserScoreHandler)
 }
