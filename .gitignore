@@ -19,3 +19,5 @@ tmp
 go.work*
 
 .DS_Store
+
+config/config.yaml
