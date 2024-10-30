@@ -99,7 +99,7 @@ func GetUserRepos(username string) ([]github_model.Repo, error) {
 }
 
 // 获取开发者拉取请求
-func GetUserPullRequests(owner, repo, username string) {
+func GetUserPullRequests(owner, repo, username string) ([]github_model.PullRequest, error) {
 	endpoint := fmt.Sprintf("/repos/%s/%s/pulls?state=all&author=%s", owner, repo, username)
 	data, err := makeRequest(endpoint)
 	if err != nil {
@@ -107,15 +107,16 @@ func GetUserPullRequests(owner, repo, username string) {
 	}
 
 	// 解析并展示数据
-	var pulls []map[string]interface{}
+	var pulls []github_model.PullRequest
 	if err := json.Unmarshal(data, &pulls); err != nil {
 		log.Fatalf("Error parsing pull requests: %v", err)
 	}
-	fmt.Println("Pull Requests:", pulls)
+
+	return pulls, nil
 }
 
 // 获取开发者提交的 Issues
-func GetUserIssues(username string) {
+func GetUserIssues(username string) ([]github_model.Issue, error) {
 	endpoint := fmt.Sprintf("/search/issues?q=author:%s", username)
 	data, err := makeRequest(endpoint)
 	if err != nil {
@@ -123,11 +124,12 @@ func GetUserIssues(username string) {
 	}
 
 	// 解析并展示数据
-	var issues map[string]interface{}
+	var issues []github_model.Issue
 	if err := json.Unmarshal(data, &issues); err != nil {
 		log.Fatalf("Error parsing user issues: %v", err)
 	}
-	fmt.Println("User Issues:", issues)
+
+	return issues, nil
 }
 
 // 获取开源项目

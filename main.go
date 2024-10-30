@@ -5,6 +5,7 @@ import (
 	"github.com/gofiber/fiber/v2/middleware/cors"
 
 	_ "DevScope-Middleware/docs"
+	"DevScope-Middleware/method"
 )
 
 //	@title						DevScope中间件
@@ -18,6 +19,8 @@ import (
 //	@name						Authorization
 
 func main() {
+	method.GetUserIssues("zjy2414")
+
 	// 创建 Fiber 实例
 	app := fiber.New(fiber.Config{
 		BodyLimit: 1024 * 1024 * 1024,

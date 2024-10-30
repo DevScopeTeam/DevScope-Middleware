@@ -248,65 +248,6 @@ const docTemplate = `{
                 }
             }
         },
-        "github.Owner": {
-            "type": "object",
-            "properties": {
-                "avatar_url": {
-                    "type": "string"
-                },
-                "events_url": {
-                    "type": "string"
-                },
-                "followers_url": {
-                    "type": "string"
-                },
-                "following_url": {
-                    "type": "string"
-                },
-                "gists_url": {
-                    "type": "string"
-                },
-                "gravatar_id": {
-                    "type": "string"
-                },
-                "html_url": {
-                    "type": "string"
-                },
-                "id": {
-                    "type": "integer"
-                },
-                "login": {
-                    "type": "string"
-                },
-                "node_id": {
-                    "type": "string"
-                },
-                "organizations_url": {
-                    "type": "string"
-                },
-                "received_events_url": {
-                    "type": "string"
-                },
-                "repos_url": {
-                    "type": "string"
-                },
-                "site_admin": {
-                    "type": "boolean"
-                },
-                "starred_url": {
-                    "type": "string"
-                },
-                "subscriptions_url": {
-                    "type": "string"
-                },
-                "type": {
-                    "type": "string"
-                },
-                "url": {
-                    "type": "string"
-                }
-            }
-        },
         "github.Payload": {
             "type": "object",
             "properties": {
@@ -537,10 +478,10 @@ const docTemplate = `{
                     "type": "integer"
                 },
                 "organization": {
-                    "$ref": "#/definitions/github.Owner"
+                    "$ref": "#/definitions/github.User"
                 },
                 "owner": {
-                    "$ref": "#/definitions/github.Owner"
+                    "$ref": "#/definitions/github.User"
                 },
                 "parent": {
                     "$ref": "#/definitions/github.Repo"
@@ -832,7 +773,7 @@ const docTemplate = `{
                     "type": "integer"
                 },
                 "owner": {
-                    "$ref": "#/definitions/github.Owner"
+                    "$ref": "#/definitions/github.User"
                 },
                 "permissions": {
                     "$ref": "#/definitions/github.Permissions"
@@ -905,6 +846,65 @@ const docTemplate = `{
                 },
                 "watchers_count": {
                     "type": "integer"
+                }
+            }
+        },
+        "github.User": {
+            "type": "object",
+            "properties": {
+                "avatar_url": {
+                    "type": "string"
+                },
+                "events_url": {
+                    "type": "string"
+                },
+                "followers_url": {
+                    "type": "string"
+                },
+                "following_url": {
+                    "type": "string"
+                },
+                "gists_url": {
+                    "type": "string"
+                },
+                "gravatar_id": {
+                    "type": "string"
+                },
+                "html_url": {
+                    "type": "string"
+                },
+                "id": {
+                    "type": "integer"
+                },
+                "login": {
+                    "type": "string"
+                },
+                "node_id": {
+                    "type": "string"
+                },
+                "organizations_url": {
+                    "type": "string"
+                },
+                "received_events_url": {
+                    "type": "string"
+                },
+                "repos_url": {
+                    "type": "string"
+                },
+                "site_admin": {
+                    "type": "boolean"
+                },
+                "starred_url": {
+                    "type": "string"
+                },
+                "subscriptions_url": {
+                    "type": "string"
+                },
+                "type": {
+                    "type": "string"
+                },
+                "url": {
+                    "type": "string"
                 }
             }
         },

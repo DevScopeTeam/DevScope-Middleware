@@ -7,7 +7,7 @@ type Repo struct {
 	NodeID              string              `json:"node_id"`
 	Name                string              `json:"name"`
 	FullName            string              `json:"full_name"`
-	Owner               Owner               `json:"owner"`
+	Owner               User                `json:"owner"`
 	Private             bool                `json:"private"`
 	HTMLURL             string              `json:"html_url"`
 	Description         string              `json:"description"`
@@ -88,30 +88,9 @@ type Repo struct {
 	SubscribersCount    int                 `json:"subscribers_count"`
 	NetworkCount        int                 `json:"network_count"`
 	License             *License            `json:"license,omitempty"`
-	Organization        *Owner              `json:"organization,omitempty"`
+	Organization        *User               `json:"organization,omitempty"`
 	Parent              *Repo               `json:"parent,omitempty"`
 	Source              *Repo               `json:"source,omitempty"`
-}
-
-type Owner struct {
-	Login             string `json:"login"`
-	ID                int64  `json:"id"`
-	NodeID            string `json:"node_id"`
-	AvatarURL         string `json:"avatar_url"`
-	GravatarID        string `json:"gravatar_id"`
-	URL               string `json:"url"`
-	HTMLURL           string `json:"html_url"`
-	FollowersURL      string `json:"followers_url"`
-	FollowingURL      string `json:"following_url"`
-	GistsURL          string `json:"gists_url"`
-	StarredURL        string `json:"starred_url"`
-	SubscriptionsURL  string `json:"subscriptions_url"`
-	OrganizationsURL  string `json:"organizations_url"`
-	ReposURL          string `json:"repos_url"`
-	EventsURL         string `json:"events_url"`
-	ReceivedEventsURL string `json:"received_events_url"`
-	Type              string `json:"type"`
-	SiteAdmin         bool   `json:"site_admin"`
 }
 
 type Permissions struct {
@@ -120,21 +99,12 @@ type Permissions struct {
 	Admin bool `json:"admin"`
 }
 
-type License struct {
-	Key     string `json:"key"`
-	Name    string `json:"name"`
-	URL     string `json:"url"`
-	SpdxID  string `json:"spdx_id"`
-	NodeID  string `json:"node_id"`
-	HTMLURL string `json:"html_url"`
-}
-
 type TemplateRepository struct {
 	ID                  int64       `json:"id"`
 	NodeID              string      `json:"node_id"`
 	Name                string      `json:"name"`
 	FullName            string      `json:"full_name"`
-	Owner               Owner       `json:"owner"`
+	Owner               User        `json:"owner"`
 	Private             bool        `json:"private"`
 	HTMLURL             string      `json:"html_url"`
 	Description         string      `json:"description"`
