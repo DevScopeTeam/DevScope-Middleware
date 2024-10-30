@@ -42,8 +42,8 @@ func init() {
 var default_config = `mysql:
   DSN: DevScope:DevScope123456@tcp(127.0.0.1:3306)/DevScope?charset=utf8mb4&parseTime=True&loc=Local
 
-  github:
-    token: xxx
+github:
+  token: xxx
 `
 
 // 检查配置文件是否存在
