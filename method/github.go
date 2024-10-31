@@ -22,8 +22,11 @@ func makeRequest(endpoint string) ([]byte, error) {
 
 	// 设置 Token 认证 (如果有)
 	if config.GithubToken != "" {
-		req.Header.Set("Authorization", "token "+config.GithubToken)
+		req.Header.Set("Authorization", "Bearer "+config.GithubToken)
 	}
+
+	// 设置 X-GitHub-Api-Version
+	req.Header.Set("X-GitHub-Api-Version", "2022-11-28")
 
 	// 发起请求
 	resp, err := client.Do(req)
@@ -196,7 +199,7 @@ func CalculateDeveloperScore(username string) (float64, github_model.UserInfo, e
 	// 计算贡献度
 	contributionScore := 0.0
 	for _, repo := range repos {
-		fmt.Println(repo.Owner.Login, repo.Name)
+		// fmt.Println(repo.Owner.Login, repo.Name)
 		contributors, err := GetRepoContributors(repo.Owner.Login, repo.Name)
 		if err != nil {
 			continue
