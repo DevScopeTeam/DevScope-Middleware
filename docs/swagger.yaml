@@ -1,4 +1,3 @@
-basePath: /
 definitions:
   github.Actor:
     properties:
@@ -15,25 +14,49 @@ definitions:
       url:
         type: string
     type: object
-  github.Author:
-    properties:
-      email:
-        type: string
-      name:
-        type: string
-    type: object
   github.Commit:
     properties:
       author:
-        $ref: '#/definitions/github.Author'
+        $ref: '#/definitions/github.User'
+      comments_url:
+        type: string
+      commit:
+        $ref: '#/definitions/github.CommitDetails'
+      committer:
+        $ref: '#/definitions/github.User'
       distinct:
         type: boolean
+      html_url:
+        type: string
       message:
         type: string
+      node_id:
+        type: string
+      parents:
+        items:
+          $ref: '#/definitions/github.Parent'
+        type: array
       sha:
         type: string
       url:
         type: string
+    type: object
+  github.CommitDetails:
+    properties:
+      author:
+        $ref: '#/definitions/github.User'
+      comment_count:
+        type: integer
+      committer:
+        $ref: '#/definitions/github.User'
+      message:
+        type: string
+      tree:
+        $ref: '#/definitions/github.Tree'
+      url:
+        type: string
+      verification:
+        $ref: '#/definitions/github.Verification'
     type: object
   github.Event:
     properties:
@@ -72,6 +95,13 @@ definitions:
       node_id:
         type: string
       spdx_id:
+        type: string
+      url:
+        type: string
+    type: object
+  github.Parent:
+    properties:
+      sha:
         type: string
       url:
         type: string
@@ -475,6 +505,13 @@ definitions:
       watchers_count:
         type: integer
     type: object
+  github.Tree:
+    properties:
+      sha:
+        type: string
+      url:
+        type: string
+    type: object
   github.User:
     properties:
       avatar_url:
@@ -598,14 +635,33 @@ definitions:
       user:
         $ref: '#/definitions/github.UserInfo'
     type: object
+  github.Verification:
+    properties:
+      payload:
+        type: string
+      reason:
+        type: string
+      signature:
+        type: string
+      verified:
+        type: boolean
+    type: object
   model.DevScoreResp:
     properties:
       code:
         type: integer
       score:
-        type: number
+        $ref: '#/definitions/model.DeveloperRank'
       user_info:
         $ref: '#/definitions/github.UserInfo'
+    type: object
+  model.DeveloperRank:
+    properties:
+      score:
+        $ref: '#/definitions/model.Score'
+      username:
+        description: 开发者用户名
+        type: string
     type: object
   model.OperationResp:
     properties:
@@ -614,13 +670,23 @@ definitions:
       msg:
         type: string
     type: object
-host: 127.0.0.1:9000
+  model.Score:
+    properties:
+      code:
+        description: 代码贡献量评分
+        type: number
+      influence:
+        description: 社区影响力评分
+        type: number
+      overall:
+        description: 综合评分
+        type: number
+      project:
+        description: 项目重要性评分
+        type: number
+    type: object
 info:
   contact: {}
-  description: "DevScope中间件（DevScope-Middleware）是一个基于 Fiber 的 RESTful API 服务，用于提供DevScope的后端服务。\n注意，有
-    \U0001F9B8 标识的接口需要管理员权限才能访问。"
-  title: DevScope中间件
-  version: v1.0.0
 paths:
   /github/user/events:
     get:
@@ -722,9 +788,4 @@ paths:
       summary: 获取开发者评分
       tags:
       - Score
-securityDefinitions:
-  ApiKeyAuth:
-    in: header
-    name: Authorization
-    type: apiKey
 swagger: "2.0"

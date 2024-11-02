@@ -192,34 +192,70 @@ const docTemplate = `{
                 }
             }
         },
-        "github.Author": {
-            "type": "object",
-            "properties": {
-                "email": {
-                    "type": "string"
-                },
-                "name": {
-                    "type": "string"
-                }
-            }
-        },
         "github.Commit": {
             "type": "object",
             "properties": {
                 "author": {
-                    "$ref": "#/definitions/github.Author"
+                    "$ref": "#/definitions/github.User"
+                },
+                "comments_url": {
+                    "type": "string"
+                },
+                "commit": {
+                    "$ref": "#/definitions/github.CommitDetails"
+                },
+                "committer": {
+                    "$ref": "#/definitions/github.User"
                 },
                 "distinct": {
                     "type": "boolean"
                 },
+                "html_url": {
+                    "type": "string"
+                },
                 "message": {
                     "type": "string"
+                },
+                "node_id": {
+                    "type": "string"
+                },
+                "parents": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/github.Parent"
+                    }
                 },
                 "sha": {
                     "type": "string"
                 },
                 "url": {
                     "type": "string"
+                }
+            }
+        },
+        "github.CommitDetails": {
+            "type": "object",
+            "properties": {
+                "author": {
+                    "$ref": "#/definitions/github.User"
+                },
+                "comment_count": {
+                    "type": "integer"
+                },
+                "committer": {
+                    "$ref": "#/definitions/github.User"
+                },
+                "message": {
+                    "type": "string"
+                },
+                "tree": {
+                    "$ref": "#/definitions/github.Tree"
+                },
+                "url": {
+                    "type": "string"
+                },
+                "verification": {
+                    "$ref": "#/definitions/github.Verification"
                 }
             }
         },
@@ -279,6 +315,17 @@ const docTemplate = `{
                     "type": "string"
                 },
                 "spdx_id": {
+                    "type": "string"
+                },
+                "url": {
+                    "type": "string"
+                }
+            }
+        },
+        "github.Parent": {
+            "type": "object",
+            "properties": {
+                "sha": {
                     "type": "string"
                 },
                 "url": {
@@ -887,6 +934,17 @@ const docTemplate = `{
                 }
             }
         },
+        "github.Tree": {
+            "type": "object",
+            "properties": {
+                "sha": {
+                    "type": "string"
+                },
+                "url": {
+                    "type": "string"
+                }
+            }
+        },
         "github.User": {
             "type": "object",
             "properties": {
@@ -1073,6 +1131,23 @@ const docTemplate = `{
                 }
             }
         },
+        "github.Verification": {
+            "type": "object",
+            "properties": {
+                "payload": {
+                    "type": "string"
+                },
+                "reason": {
+                    "type": "string"
+                },
+                "signature": {
+                    "type": "string"
+                },
+                "verified": {
+                    "type": "boolean"
+                }
+            }
+        },
         "model.DevScoreResp": {
             "type": "object",
             "properties": {
@@ -1080,10 +1155,22 @@ const docTemplate = `{
                     "type": "integer"
                 },
                 "score": {
-                    "type": "number"
+                    "$ref": "#/definitions/model.DeveloperRank"
                 },
                 "user_info": {
                     "$ref": "#/definitions/github.UserInfo"
+                }
+            }
+        },
+        "model.DeveloperRank": {
+            "type": "object",
+            "properties": {
+                "score": {
+                    "$ref": "#/definitions/model.Score"
+                },
+                "username": {
+                    "description": "开发者用户名",
+                    "type": "string"
                 }
             }
         },
@@ -1097,25 +1184,39 @@ const docTemplate = `{
                     "type": "string"
                 }
             }
-        }
-    },
-    "securityDefinitions": {
-        "ApiKeyAuth": {
-            "type": "apiKey",
-            "name": "Authorization",
-            "in": "header"
+        },
+        "model.Score": {
+            "type": "object",
+            "properties": {
+                "code": {
+                    "description": "代码贡献量评分",
+                    "type": "number"
+                },
+                "influence": {
+                    "description": "社区影响力评分",
+                    "type": "number"
+                },
+                "overall": {
+                    "description": "综合评分",
+                    "type": "number"
+                },
+                "project": {
+                    "description": "项目重要性评分",
+                    "type": "number"
+                }
+            }
         }
     }
 }`
 
 // SwaggerInfo holds exported Swagger Info so clients can modify it
 var SwaggerInfo = &swag.Spec{
-	Version:          "v1.0.0",
-	Host:             "127.0.0.1:9000",
-	BasePath:         "/",
+	Version:          "",
+	Host:             "",
+	BasePath:         "",
 	Schemes:          []string{},
-	Title:            "DevScope中间件",
-	Description:      "DevScope中间件（DevScope-Middleware）是一个基于 Fiber 的 RESTful API 服务，用于提供DevScope的后端服务。\n注意，有 🦸 标识的接口需要管理员权限才能访问。",
+	Title:            "",
+	Description:      "",
 	InfoInstanceName: "swagger",
 	SwaggerTemplate:  docTemplate,
 	LeftDelim:        "{{",
