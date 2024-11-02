@@ -1,8 +1,13 @@
 {
     "swagger": "2.0",
     "info": {
-        "contact": {}
+        "description": "DevScope中间件（DevScope-Middleware）是一个基于 Fiber 的 RESTful API 服务，用于提供DevScope的后端服务。\n注意，有 🦸 标识的接口需要管理员权限才能访问。",
+        "title": "DevScope中间件",
+        "contact": {},
+        "version": "v1.0.0"
     },
+    "host": "127.0.0.1:9000",
+    "basePath": "/",
     "paths": {
         "/github/user/events": {
             "get": {
@@ -1194,6 +1199,13 @@
                     "type": "number"
                 }
             }
+        }
+    },
+    "securityDefinitions": {
+        "ApiKeyAuth": {
+            "type": "apiKey",
+            "name": "Authorization",
+            "in": "header"
         }
     }
 }
