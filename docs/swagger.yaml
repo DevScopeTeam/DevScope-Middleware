@@ -653,8 +653,6 @@ definitions:
         type: integer
       score:
         $ref: '#/definitions/model.DeveloperRank'
-      user_info:
-        $ref: '#/definitions/github.UserInfo'
     type: object
   model.DeveloperRank:
     properties:

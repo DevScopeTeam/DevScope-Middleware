@@ -1156,9 +1156,6 @@ const docTemplate = `{
                 },
                 "score": {
                     "$ref": "#/definitions/model.DeveloperRank"
-                },
-                "user_info": {
-                    "$ref": "#/definitions/github.UserInfo"
                 }
             }
         },
