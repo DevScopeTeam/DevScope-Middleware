@@ -2,6 +2,7 @@ package method
 
 import (
 	"DevScope-Middleware/config"
+	"DevScope-Middleware/model"
 	github_model "DevScope-Middleware/model/github"
 	"encoding/json"
 	"fmt"
@@ -218,14 +219,12 @@ func CalculateWorkWeightInRepo(username, owner, repo_name string) (float64, erro
 	dev_count := 0.0
 	other_count := 0.0
 	for _, commit := range commits {
-		fmt.Println(commit.Author.Login, commit.Committer.Login)
-		fmt.Println("---------------")
+		// fmt.Println(commit.Author.Login, commit.Committer.Login)
+		// fmt.Println("---------------")
 		if commit.Author.Login == username {
 			dev_count++
 		} else if commit.Author.Login != "" {
 			other_count++
-		} else {
-			fmt.Println(commit)
 		}
 	}
 
@@ -233,57 +232,43 @@ func CalculateWorkWeightInRepo(username, owner, repo_name string) (float64, erro
 }
 
 // 计算开发者评分
-func CalculateDeveloperScore(username string) (float64, github_model.UserInfo, error) {
-	// 权重设置
-	const (
-		weightContribution = 0.4
-		weightProject      = 0.4
-		weightActivity     = 0.2
-		// weightTechStack    = 0.1
-	)
+func CalculateDeveloperScore(username string) (model.DeveloperRank, error) {
+	var rank model.DeveloperRank
+	rank.Username = username
 
-	user, err := GetGithuUserInfo(username)
-	if err != nil {
-		return 0, github_model.UserInfo{}, err
-	}
+	// user, err := GetGithuUserInfo(username)
+	// if err != nil {
+	// 	return rank, err
+	// }
 
 	// 获取开发者的活动数据
 	events, err := GetUserEvents(username)
 	if err != nil {
-		return 0, user, err
+		return rank, err
 	}
 
 	// 获取开发者的仓库信息
 	repos, err := GetUserRepos(username)
 	if err != nil {
-		return 0, user, err
-	}
-
-	// 计算贡献度
-	contributionScore := 0.0
-	for _, repo := range repos {
-		fmt.Println(repo.Owner.Login, repo.NetworkCount)
-		if err != nil {
-			continue
-		}
-		// for _, contributor := range contributors {
-		// 	if contributor.Login == username {
-		// 		contributionScore += float64(contributor.Collaborators)
-		// 	}
-		// }
+		return rank, err
 	}
 
 	// 计算项目重要性
-	projectScore := 0.0
 	for _, repo := range repos {
-		projectScore += float64(repo.StargazersCount + repo.ForksCount)
+		// fmt.Println(repo.Owner.Login)
+		rank.Score.ProjectImportance += float64(repo.ForksCount) * float64(repo.StargazersCount)
 	}
 
-	// 计算活跃度
-	activityScore := float64(len(events))
+	// 计算代码贡献分
+	rank.Score.CodeContribution = float64(len(events))
+
+	// 计算社区影响力
+	for _, repo := range repos {
+		rank.Score.CommunityInfluence += float64(repo.StargazersCount + repo.ForksCount)
+	}
 
 	// 综合评分
-	totalScore := weightContribution*contributionScore + weightProject*projectScore + weightActivity*activityScore
+	rank.Score.CalculateOverallScore()
 
-	return totalScore, user, nil
+	return rank, nil
 }

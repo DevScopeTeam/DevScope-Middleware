@@ -117,7 +117,7 @@ func GetUserScoreHandler(c *fiber.Ctx) error {
 	username := c.Query("username")
 
 	// 调用方法
-	score, user_info, err := method.CalculateDeveloperScore(username)
+	score, err := method.CalculateDeveloperScore(username)
 	if err != nil {
 		return c.JSON(model.OperationResp{
 			Code: 400,
@@ -127,8 +127,7 @@ func GetUserScoreHandler(c *fiber.Ctx) error {
 
 	// 返回结果
 	return c.JSON(model.DevScoreResp{
-		Code:     200,
-		Score:    score,
-		UserInfo: user_info,
+		Code:  200,
+		Score: score,
 	})
 }

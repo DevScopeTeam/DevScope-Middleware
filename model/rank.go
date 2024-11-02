@@ -40,7 +40,13 @@ type DetailRank struct {
 
 // DeveloperRank 表示开发者的评分
 type DeveloperRank struct {
-	Username string     `json:"username"` // 开发者用户名
-	Score    Score      `json:"score"`
-	Detail   DetailRank `json:"detail"` // 详细评分
+	Username string `json:"username"` // 开发者用户名
+	Score    Score  `json:"score"`
+}
+
+// CalculateOverallScore 计算综合评分
+func (s *Score) CalculateOverallScore() {
+	// 假设权重分别为：项目重要性0.3，代码贡献0.4，社区影响力0.3
+	weights := [3]float64{0.3, 0.4, 0.3}
+	s.Overall = s.ProjectImportance*weights[0] + s.CodeContribution*weights[1] + s.CommunityInfluence*weights[2]
 }
