@@ -93,6 +93,13 @@ type Repo struct {
 	Source              *Repo               `json:"source,omitempty"`
 }
 
+// Repository represents the simplified repository associated with the event.
+type Repository struct {
+	ID   int64  `json:"id"`
+	Name string `json:"name"`
+	URL  string `json:"url"`
+}
+
 type Permissions struct {
 	Pull  bool `json:"pull"`
 	Push  bool `json:"push"`

@@ -7,6 +7,8 @@ import (
 	"fmt"
 	"io"
 	"net/http"
+	"strings"
+	"time"
 )
 
 // GitHub API 基础 URL
@@ -14,7 +16,9 @@ const apiURL = "https://api.github.com"
 
 // 生成 HTTP 请求
 func makeRequest(endpoint string) ([]byte, error) {
-	client := &http.Client{}
+	client := &http.Client{
+		Timeout: 10 * time.Second,
+	}
 	req, err := http.NewRequest("GET", apiURL+endpoint, nil)
 	if err != nil {
 		return nil, err
@@ -68,7 +72,7 @@ func GetGithuUserInfo(username string) (github_model.UserInfo, error) {
 
 // 获取开发者活动数据
 func GetUserEvents(username string) ([]github_model.Event, error) {
-	endpoint := fmt.Sprintf("/users/%s/events", username)
+	endpoint := fmt.Sprintf("/users/%s/events/public", username)
 	data, err := makeRequest(endpoint)
 	if err != nil {
 		return nil, err
@@ -83,7 +87,35 @@ func GetUserEvents(username string) ([]github_model.Event, error) {
 	return events, nil
 }
 
-// 获取仓库和语言偏好
+// 获取用户最近提交过commit记录的仓库（暂未指定时间范围）
+func GetUserRecentRepos(username string) ([]github_model.Repo, error) {
+	events, err := GetUserEvents(username)
+	if err != nil {
+		return nil, err
+	}
+
+	repos := []github_model.Repo{}
+	id_list := make(map[int64]bool)
+	for _, event := range events {
+		if event.Type == "PushEvent" && event.Actor.Login == username {
+			if _, ok := id_list[event.Repo.ID]; !ok {
+				repo_name := strings.Split(event.Repo.Name, "/")
+				fmt.Println(repo_name)
+				if repo, err := GetRepo(repo_name[0], repo_name[1]); err != nil {
+					return nil, err
+				} else {
+					repos = append(repos, repo)
+				}
+				id_list[event.Repo.ID] = true
+			}
+		}
+	}
+	fmt.Println(id_list)
+
+	return repos, nil
+}
+
+// 获取用户自己的仓库和语言偏好
 func GetUserRepos(username string) ([]github_model.Repo, error) {
 	endpoint := fmt.Sprintf("/users/%s/repos", username)
 	data, err := makeRequest(endpoint)
@@ -169,6 +201,37 @@ func GetRepoContributors(owner, repo string) ([]github_model.UserInfo, error) {
 	return contributors, nil
 }
 
+// 计算开发者在仓库中的工作占比
+func CalculateWorkWeightInRepo(username, owner, repo_name string) (float64, error) {
+	endpoint := fmt.Sprintf("/repos/%s/%s/commits", owner, repo_name)
+	data, err := makeRequest(endpoint)
+	if err != nil {
+		return 0, err
+	}
+
+	// 解析并展示数据
+	var commits []github_model.Commit
+	if err := json.Unmarshal(data, &commits); err != nil {
+		return 0, err
+	}
+	// total := float64(len(commits))
+	dev_count := 0.0
+	other_count := 0.0
+	for _, commit := range commits {
+		fmt.Println(commit.Author.Login, commit.Committer.Login)
+		fmt.Println("---------------")
+		if commit.Author.Login == username {
+			dev_count++
+		} else if commit.Author.Login != "" {
+			other_count++
+		} else {
+			fmt.Println(commit)
+		}
+	}
+
+	return float64(dev_count / (other_count + dev_count)), nil
+}
+
 // 计算开发者评分
 func CalculateDeveloperScore(username string) (float64, github_model.UserInfo, error) {
 	// 权重设置
@@ -199,16 +262,15 @@ func CalculateDeveloperScore(username string) (float64, github_model.UserInfo, e
 	// 计算贡献度
 	contributionScore := 0.0
 	for _, repo := range repos {
-		// fmt.Println(repo.Owner.Login, repo.Name)
-		contributors, err := GetRepoContributors(repo.Owner.Login, repo.Name)
+		fmt.Println(repo.Owner.Login, repo.NetworkCount)
 		if err != nil {
 			continue
 		}
-		for _, contributor := range contributors {
-			if contributor.Login == username {
-				contributionScore += float64(contributor.Collaborators)
-			}
-		}
+		// for _, contributor := range contributors {
+		// 	if contributor.Login == username {
+		// 		contributionScore += float64(contributor.Collaborators)
+		// 	}
+		// }
 	}
 
 	// 计算项目重要性

@@ -5,24 +5,24 @@ import (
 )
 
 type User struct {
-	Login             string `json:"login"`
-	ID                int64  `json:"id"`
-	NodeID            string `json:"node_id"`
-	AvatarURL         string `json:"avatar_url"`
-	GravatarID        string `json:"gravatar_id"`
-	URL               string `json:"url"`
-	HTMLURL           string `json:"html_url"`
-	FollowersURL      string `json:"followers_url"`
-	FollowingURL      string `json:"following_url"`
-	GistsURL          string `json:"gists_url"`
-	StarredURL        string `json:"starred_url"`
-	SubscriptionsURL  string `json:"subscriptions_url"`
-	OrganizationsURL  string `json:"organizations_url"`
-	ReposURL          string `json:"repos_url"`
-	EventsURL         string `json:"events_url"`
-	ReceivedEventsURL string `json:"received_events_url"`
-	Type              string `json:"type"`
-	SiteAdmin         bool   `json:"site_admin"`
+	Login             string `json:"login,omitempty"`
+	ID                int64  `json:"id,omitempty"`
+	NodeID            string `json:"node_id,omitempty"`
+	AvatarURL         string `json:"avatar_url,omitempty"`
+	GravatarID        string `json:"gravatar_id,omitempty"`
+	URL               string `json:"url,omitempty"`
+	HTMLURL           string `json:"html_url,omitempty"`
+	FollowersURL      string `json:"followers_url,omitempty"`
+	FollowingURL      string `json:"following_url,omitempty"`
+	GistsURL          string `json:"gists_url,omitempty"`
+	StarredURL        string `json:"starred_url,omitempty"`
+	SubscriptionsURL  string `json:"subscriptions_url,omitempty"`
+	OrganizationsURL  string `json:"organizations_url,omitempty"`
+	ReposURL          string `json:"repos_url,omitempty"`
+	EventsURL         string `json:"events_url,omitempty"`
+	ReceivedEventsURL string `json:"received_events_url,omitempty"`
+	Type              string `json:"type,omitempty"`
+	SiteAdmin         bool   `json:"site_admin,omitempty"`
 }
 
 type UserInfo struct {

@@ -23,13 +23,6 @@ type Actor struct {
 	AvatarURL    string `json:"avatar_url"`
 }
 
-// Repository represents the repository associated with the event.
-type Repository struct {
-	ID   int64  `json:"id"`
-	Name string `json:"name"`
-	URL  string `json:"url"`
-}
-
 // Payload is the payload of the event, which varies depending on the event type.
 type Payload struct {
 	Action       string   `json:"action,omitempty"`
@@ -40,21 +33,6 @@ type Payload struct {
 	Head         string   `json:"head,omitempty"`
 	Before       string   `json:"before,omitempty"`
 	Commits      []Commit `json:"commits,omitempty"`
-}
-
-// Commit represents a commit object within the payload of a PushEvent.
-type Commit struct {
-	SHA      string `json:"sha"`
-	Author   Author `json:"author"`
-	Message  string `json:"message"`
-	Distinct bool   `json:"distinct"`
-	URL      string `json:"url"`
-}
-
-// Author represents the author of a commit.
-type Author struct {
-	Email string `json:"email"`
-	Name  string `json:"name"`
 }
 
 type EventResp struct {
