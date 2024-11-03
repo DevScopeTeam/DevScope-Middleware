@@ -91,6 +91,44 @@ const docTemplate = `{
                 }
             }
         },
+        "/github/user/nation": {
+            "get": {
+                "description": "获取开发者国籍",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Github"
+                ],
+                "summary": "获取开发者国籍",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Github用户名",
+                        "name": "username",
+                        "in": "query",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/model.DevNationalityResp"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/model.OperationResp"
+                        }
+                    }
+                }
+            }
+        },
         "/github/user/repos": {
             "get": {
                 "description": "获取仓库和语言偏好",
@@ -1145,6 +1183,17 @@ const docTemplate = `{
                 },
                 "verified": {
                     "type": "boolean"
+                }
+            }
+        },
+        "model.DevNationalityResp": {
+            "type": "object",
+            "properties": {
+                "code": {
+                    "type": "integer"
+                },
+                "nation": {
+                    "type": "string"
                 }
             }
         },

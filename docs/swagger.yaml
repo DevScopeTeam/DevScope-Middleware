@@ -647,6 +647,13 @@ definitions:
       verified:
         type: boolean
     type: object
+  model.DevNationalityResp:
+    properties:
+      code:
+        type: integer
+      nation:
+        type: string
+    type: object
   model.DevScoreResp:
     properties:
       code:
@@ -740,6 +747,31 @@ paths:
           schema:
             $ref: '#/definitions/model.OperationResp'
       summary: 获取开发者基本信息
+      tags:
+      - Github
+  /github/user/nation:
+    get:
+      consumes:
+      - application/json
+      description: 获取开发者国籍
+      parameters:
+      - description: Github用户名
+        in: query
+        name: username
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/model.DevNationalityResp'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/model.OperationResp'
+      summary: 获取开发者国籍
       tags:
       - Github
   /github/user/repos:

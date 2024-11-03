@@ -71,6 +71,23 @@ func GetGithuUserInfo(username string) (github_model.UserInfo, error) {
 	return user, nil
 }
 
+// 获取开发者国籍
+func GetUserNationality(username string) (string, error) {
+	endpoint := fmt.Sprintf("/users/%s", username)
+	data, err := makeRequest(endpoint)
+	if err != nil {
+		return "", err
+	}
+
+	// 解析并展示数据
+	var user github_model.UserInfo
+	if err := json.Unmarshal(data, &user); err != nil {
+		return "", err
+	}
+
+	return user.Location, nil
+}
+
 // 获取开发者活动数据
 func GetUserEvents(username string) ([]github_model.Event, error) {
 	endpoint := fmt.Sprintf("/users/%s/events/public", username)
