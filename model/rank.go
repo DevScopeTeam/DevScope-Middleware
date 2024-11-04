@@ -73,7 +73,7 @@ func (p *ProjectImportance) CalculateScore() float64 {
 func (c *CodeContribution) CalculateScore() float64 {
 	// 权重可以根据实际情况进行调整
 	const (
-		commitWeight = 0.005
+		commitWeight = 0.01
 		prWeight     = 0.01
 	)
 
