@@ -2,7 +2,6 @@ package method
 
 import (
 	"DevScope-Middleware/config"
-	"DevScope-Middleware/model"
 	github_model "DevScope-Middleware/model/github"
 	"encoding/json"
 	"fmt"
@@ -10,8 +9,6 @@ import (
 	"net/http"
 	"strings"
 	"time"
-
-	"github.com/tidwall/gjson"
 )
 
 // GitHub API 基础 URL
@@ -71,45 +68,6 @@ func GetGithuUserInfo(username string) (github_model.UserInfo, error) {
 	}
 
 	return user, nil
-}
-
-var system_prompt = `根据用户提供的信息推测归属国家，并直接返回json。
-
-返回结果样例1：
-{
-    "code": 200,
-    "nation": "XXX"
-}
-
-返回结果样例2：
-{
-    "code": 400,
-    "nation": "Unknown"
-}`
-
-// 获取开发者国籍
-func GetUserNationality(username string) (string, error) {
-	endpoint := fmt.Sprintf("/users/%s", username)
-	data, err := makeRequest(endpoint)
-	if err != nil {
-		return "", err
-	}
-
-	// 解析并展示数据
-	var user github_model.UserInfo
-	if err := json.Unmarshal(data, &user); err != nil {
-		return "", err
-	}
-
-	nation_resp, err := RequestQwen(system_prompt, user.Location)
-	if err != nil {
-		return "", err
-	}
-
-	nation_resp = strings.TrimSpace(nation_resp)
-	nation := gjson.Get(nation_resp, "nation").String()
-
-	return nation, nil
 }
 
 // 获取开发者活动数据
@@ -241,75 +199,4 @@ func GetRepoContributors(owner, repo string) ([]github_model.UserInfo, error) {
 	// fmt.Println("Contributors:", contributors)
 
 	return contributors, nil
-}
-
-// 计算开发者在仓库中的工作占比
-func CalculateWorkWeightInRepo(username, owner, repo_name string) (float64, error) {
-	endpoint := fmt.Sprintf("/repos/%s/%s/commits", owner, repo_name)
-	data, err := makeRequest(endpoint)
-	if err != nil {
-		return 0, err
-	}
-
-	// 解析并展示数据
-	var commits []github_model.Commit
-	if err := json.Unmarshal(data, &commits); err != nil {
-		return 0, err
-	}
-	// total := float64(len(commits))
-	dev_count := 0.0
-	other_count := 0.0
-	for _, commit := range commits {
-		// fmt.Println(commit.Author.Login, commit.Committer.Login)
-		// fmt.Println("---------------")
-		if commit.Author.Login == username {
-			dev_count++
-		} else if commit.Author.Login != "" {
-			other_count++
-		}
-	}
-
-	return float64(dev_count / (other_count + dev_count)), nil
-}
-
-// 计算开发者评分
-func CalculateDeveloperScore(username string) (model.DeveloperRank, error) {
-	var rank model.DeveloperRank
-	rank.Username = username
-
-	// user, err := GetGithuUserInfo(username)
-	// if err != nil {
-	// 	return rank, err
-	// }
-
-	// 获取开发者的活动数据
-	events, err := GetUserEvents(username)
-	if err != nil {
-		return rank, err
-	}
-
-	// 获取开发者的仓库信息
-	repos, err := GetUserRepos(username)
-	if err != nil {
-		return rank, err
-	}
-
-	// 计算项目重要性
-	for _, repo := range repos {
-		// fmt.Println(repo.Owner.Login)
-		rank.Score.ProjectImportance += float64(repo.ForksCount) * float64(repo.StargazersCount)
-	}
-
-	// 计算代码贡献分
-	rank.Score.CodeContribution = float64(len(events))
-
-	// 计算社区影响力
-	for _, repo := range repos {
-		rank.Score.CommunityInfluence += float64(repo.StargazersCount + repo.ForksCount)
-	}
-
-	// 综合评分
-	rank.Score.CalculateOverallScore()
-
-	return rank, nil
 }
