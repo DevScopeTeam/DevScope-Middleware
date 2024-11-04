@@ -1252,17 +1252,24 @@ const docTemplate = `{
                 }
             }
         }
+    },
+    "securityDefinitions": {
+        "ApiKeyAuth": {
+            "type": "apiKey",
+            "name": "Authorization",
+            "in": "header"
+        }
     }
 }`
 
 // SwaggerInfo holds exported Swagger Info so clients can modify it
 var SwaggerInfo = &swag.Spec{
-	Version:          "",
-	Host:             "",
-	BasePath:         "",
+	Version:          "v1.0.0",
+	Host:             "127.0.0.1:9000",
+	BasePath:         "/",
 	Schemes:          []string{},
-	Title:            "",
-	Description:      "",
+	Title:            "DevScope中间件",
+	Description:      "DevScope中间件（DevScope-Middleware）是一个基于 Fiber 的 RESTful API 服务，用于提供DevScope的后端服务。\n注意，有 🦸 标识的接口需要管理员权限才能访问。",
 	InfoInstanceName: "swagger",
 	SwaggerTemplate:  docTemplate,
 	LeftDelim:        "{{",
