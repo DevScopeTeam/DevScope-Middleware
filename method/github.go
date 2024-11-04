@@ -10,6 +10,8 @@ import (
 	"net/http"
 	"strings"
 	"time"
+
+	"github.com/tidwall/gjson"
 )
 
 // GitHub API 基础 URL
@@ -71,6 +73,20 @@ func GetGithuUserInfo(username string) (github_model.UserInfo, error) {
 	return user, nil
 }
 
+var system_prompt = `根据用户提供的信息推测归属国家，并直接返回json。
+
+返回结果样例1：
+{
+    "code": 200,
+    "nation": "XXX"
+}
+
+返回结果样例2：
+{
+    "code": 400,
+    "nation": "Unknown"
+}`
+
 // 获取开发者国籍
 func GetUserNationality(username string) (string, error) {
 	endpoint := fmt.Sprintf("/users/%s", username)
@@ -85,7 +101,15 @@ func GetUserNationality(username string) (string, error) {
 		return "", err
 	}
 
-	return user.Location, nil
+	nation_resp, err := RequestQwen(system_prompt, user.Location)
+	if err != nil {
+		return "", err
+	}
+
+	nation_resp = strings.TrimSpace(nation_resp)
+	nation := gjson.Get(nation_resp, "nation").String()
+
+	return nation, nil
 }
 
 // 获取开发者活动数据

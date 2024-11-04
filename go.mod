@@ -5,11 +5,11 @@ go 1.18
 require (
 	github.com/go-playground/validator/v10 v10.8.0
 	github.com/gofiber/fiber/v2 v2.50.0
-	github.com/gofiber/jwt/v3 v3.3.10
 	github.com/gofiber/swagger v0.1.14
 	github.com/google/uuid v1.3.1
 	github.com/spf13/viper v1.16.0
 	github.com/swaggo/swag v1.16.2
+	github.com/tidwall/gjson v1.18.0
 	gorm.io/driver/mysql v1.5.2
 	gorm.io/gorm v1.25.5
 )
@@ -27,7 +27,6 @@ require (
 	github.com/go-playground/locales v0.14.0 // indirect
 	github.com/go-playground/universal-translator v0.18.0 // indirect
 	github.com/go-sql-driver/mysql v1.7.0 // indirect
-	github.com/golang-jwt/jwt/v4 v4.5.0 // indirect
 	github.com/hashicorp/hcl v1.0.0 // indirect
 	github.com/jinzhu/inflection v1.0.0 // indirect
 	github.com/jinzhu/now v1.1.5 // indirect
@@ -48,6 +47,8 @@ require (
 	github.com/spf13/pflag v1.0.5 // indirect
 	github.com/subosito/gotenv v1.6.0 // indirect
 	github.com/swaggo/files/v2 v2.0.0 // indirect
+	github.com/tidwall/match v1.1.1 // indirect
+	github.com/tidwall/pretty v1.2.0 // indirect
 	github.com/valyala/bytebufferpool v1.0.0 // indirect
 	github.com/valyala/fasthttp v1.50.0 // indirect
 	github.com/valyala/tcplisten v1.0.0 // indirect

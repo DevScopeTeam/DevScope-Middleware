@@ -9,9 +9,10 @@ import (
 )
 
 var (
-	DB_NAME     = "DevScope"
-	DSN         = "DevScope:DevScope123456@tcp(127.0.0.1:3306)/DevScope?charset=utf8mb4&parseTime=True&loc=Local"
-	GithubToken = ""
+	DB_NAME      = "DevScope"
+	DSN          = "DevScope:DevScope123456@tcp(127.0.0.1:3306)/DevScope?charset=utf8mb4&parseTime=True&loc=Local"
+	GithubToken  = ""
+	Qwen_API_KEY = ""
 )
 
 func init() {
@@ -36,7 +37,8 @@ func init() {
 
 	// 读取配置文件
 	DSN = viper.GetString("mysql.DSN")
-	GithubToken = viper.GetString("mysql.github.token")
+	GithubToken = viper.GetString("github.token")
+	Qwen_API_KEY = viper.GetString("qwen.api_key")
 }
 
 var default_config = `mysql:
@@ -44,6 +46,9 @@ var default_config = `mysql:
 
 github:
   token: xxx
+
+qwen:
+  api_key: xxx
 `
 
 // 检查配置文件是否存在
