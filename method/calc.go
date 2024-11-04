@@ -39,16 +39,16 @@ func CalculateDeveloperScore(username string) (model.DeveloperRank, error) {
 	var rank model.DeveloperRank
 	rank.Username = username
 
-	// user, err := GetGithuUserInfo(username)
-	// if err != nil {
-	// 	return rank, err
-	// }
-
-	// 获取开发者的活动数据
-	events, err := GetUserEvents(username)
+	user, err := GetGithuUserInfo(username)
 	if err != nil {
 		return rank, err
 	}
+
+	// 获取开发者的活动数据
+	// events, err := GetUserEvents(username)
+	// if err != nil {
+	// 	return rank, err
+	// }
 
 	// 获取开发者的仓库信息
 	repos, err := GetUserRepos(username)
@@ -58,6 +58,7 @@ func CalculateDeveloperScore(username string) (model.DeveloperRank, error) {
 
 	var detail model.DetailRank
 
+	// 计算项目重要性
 	for _, repo := range repos {
 		detail.ProjectImportance.Forks += repo.ForksCount
 		detail.ProjectImportance.Stars += repo.StargazersCount
@@ -65,17 +66,22 @@ func CalculateDeveloperScore(username string) (model.DeveloperRank, error) {
 		detail.ProjectImportance.Watchers += repo.WatchersCount
 		detail.ProjectImportance.Subscribers += repo.SubscribersCount
 	}
-
-	// 计算项目重要性
 	rank.Score.ProjectImportance = detail.ProjectImportance.CalculateScore()
 
 	// 计算代码贡献分
-	rank.Score.CodeContribution = float64(len(events))
+	if commit_count, precount, error := GetUserCommitAndPRCounts(username); error != nil {
+		return rank, error
+	} else {
+		detail.CodeContribution.CommitCount = commit_count
+		detail.CodeContribution.PrCount = precount
+	}
+	rank.Score.CodeContribution = detail.CodeContribution.CalculateScore()
 
 	// 计算社区影响力
-	for _, repo := range repos {
-		rank.Score.CommunityInfluence += float64(repo.StargazersCount + repo.ForksCount)
-	}
+	detail.CommunityInfluence.Followers = user.Followers
+	detail.CommunityInfluence.Stars = detail.ProjectImportance.Stars
+	detail.CommunityInfluence.Watchers = detail.ProjectImportance.Watchers
+	rank.Score.CommunityInfluence = detail.CommunityInfluence.CalculateScore()
 
 	// 综合评分
 	rank.Score.CalculateOverallScore()

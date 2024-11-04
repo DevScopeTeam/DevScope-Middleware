@@ -12,15 +12,15 @@ type ProjectImportance struct {
 
 // CodeContribution 表示代码贡献量
 type CodeContribution struct {
-	CommitCount      int `json:"commitCount"`      // 提交Commit的数量
-	IssueResolutions int `json:"issueResolutions"` // 解决的issue数量
+	CommitCount int `json:"commitCount"` // 提交Commit的数量
+	PrCount     int `json:"prCount"`     // 提交Pull Request的数量
 }
 
 // CommunityInfluence 表示社区影响力
 type CommunityInfluence struct {
-	EventParticipation int     `json:"eventParticipation"` // 参与社区活动的次数
-	SocialMediaImpact  float64 `json:"socialMediaImpact"`  // 社交媒体影响力评分
-	ConflictResolution int     `json:"conflictResolution"` // 调解社区冲突的次数
+	Followers int `json:"followers"` // 用户的Follower数量
+	Stars     int `json:"stars"`     // 项目的Star数量
+	Watchers  int `json:"watchers"`  // 项目的Watcher数量
 }
 
 // Score 表示综合评分
@@ -65,9 +65,36 @@ func (p *ProjectImportance) CalculateScore() float64 {
 	// 计算加权和
 	sum := forksWeight*float64(p.Forks) + starsWeight*float64(p.Stars) + issuesWeight*float64(p.Issues) + watchersWeight*float64(p.Watchers) + subscribersWeight*float64(p.Subscribers)
 
-	// 应用Sigmoid函数
-	score := sigmoid(sum)
+	// 将分数缩放到0-100的范围
+	return sigmoid(sum) * 100
+}
+
+// 计算开发者的代码贡献量评分
+func (c *CodeContribution) CalculateScore() float64 {
+	// 权重可以根据实际情况进行调整
+	const (
+		commitWeight = 0.005
+		prWeight     = 0.01
+	)
+
+	// 计算加权和
+	sum := commitWeight*float64(c.CommitCount) + prWeight*float64(c.PrCount)
 
 	// 将分数缩放到0-100的范围
-	return score * 100
+	return sigmoid(sum) * 100
+}
+
+func (c *CommunityInfluence) CalculateScore() float64 {
+	// 权重可以根据实际情况进行调整
+	const (
+		followersWeight = 0.01
+		starsWeight     = 0.005
+		watchersWeight  = 0.005
+	)
+
+	// 计算加权和
+	sum := followersWeight*float64(c.Followers) + starsWeight*float64(c.Stars) + watchersWeight*float64(c.Watchers)
+
+	// 将分数缩放到0-100的范围
+	return sigmoid(sum) * 100
 }

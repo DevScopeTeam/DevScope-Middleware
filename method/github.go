@@ -110,7 +110,7 @@ func GetUserRecentRepos(username string) ([]github_model.Repo, error) {
 			}
 		}
 	}
-	fmt.Println(id_list)
+	// fmt.Println(id_list)
 
 	return repos, nil
 }
@@ -199,4 +199,66 @@ func GetRepoContributors(owner, repo string) ([]github_model.UserInfo, error) {
 	// fmt.Println("Contributors:", contributors)
 
 	return contributors, nil
+}
+
+// 获取用户的总 commit 和 PR 数量
+func GetUserCommitAndPRCounts(username string) (int, int, error) {
+	repos, err := GetUserRepos(username)
+	if err != nil {
+		return 0, 0, err
+	}
+
+	totalCommits := 0
+	totalPRs := 0
+
+	for _, repo := range repos {
+		// fmt.Println(repo.Owner.Login, repo.Name)
+		// 统计 commits
+		commitCount, err := GetRepoCommitCount(repo.Owner.Login, repo.Name)
+		if err != nil {
+			continue
+		}
+		totalCommits += commitCount
+
+		// 统计 PRs
+		prCount, err := GetRepoPRCount(repo.Owner.Login, repo.Name)
+		if err != nil {
+			continue
+		}
+		totalPRs += prCount
+	}
+
+	return totalCommits, totalPRs, nil
+}
+
+// 获取指定仓库的 commit 数量
+func GetRepoCommitCount(owner, repo string) (int, error) {
+	endpoint := fmt.Sprintf("/repos/%s/%s/commits", owner, repo)
+	data, err := makeRequest(endpoint)
+	if err != nil {
+		return 0, err
+	}
+
+	var commits []interface{}
+	if err := json.Unmarshal(data, &commits); err != nil {
+		return 0, err
+	}
+
+	return len(commits), nil
+}
+
+// 获取指定仓库的 PR 数量
+func GetRepoPRCount(owner, repo string) (int, error) {
+	endpoint := fmt.Sprintf("/repos/%s/%s/pulls?state=all", owner, repo)
+	data, err := makeRequest(endpoint)
+	if err != nil {
+		return 0, err
+	}
+
+	var prs []interface{}
+	if err := json.Unmarshal(data, &prs); err != nil {
+		return 0, err
+	}
+
+	return len(prs), nil
 }
