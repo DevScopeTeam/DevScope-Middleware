@@ -24,7 +24,7 @@ func GetUserScoreHandler(c *fiber.Ctx) error {
 
 	score, err := method.GetRank(username)
 	if err != nil {
-		// 调用方法
+		// 计算分数
 		score, err = method.CalculateDeveloperScore(username)
 		if err != nil {
 			return c.JSON(model.OperationResp{
@@ -32,6 +32,16 @@ func GetUserScoreHandler(c *fiber.Ctx) error {
 				Msg:  err.Error(),
 			})
 		}
+
+		// 获取国籍
+		score.Nation, err = method.GetUserNation(username)
+		if err != nil {
+			return c.JSON(model.OperationResp{
+				Code: 400,
+				Msg:  err.Error(),
+			})
+		}
+
 		// 存储至数据库
 		method.AddRank(score)
 	}
