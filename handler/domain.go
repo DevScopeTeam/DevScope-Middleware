@@ -11,7 +11,7 @@ import (
 //
 //	@Summary		获取领域下的用户列表
 //	@Description	获取领域下的用户列表
-//	@Tags			Field
+//	@Tags			Domain
 //	@Accept			json
 //	@Produce		json
 //	@Param			uuid		query		string	true	"TagnUUID"
@@ -19,7 +19,7 @@ import (
 //	@Param			pageSize	query		int		false	"每页数量（默认：10）"
 //	@Success		200			{object}	model.UsernameListResp
 //	@Failure		400			{object}	model.OperationResp
-//	@Router			/field/list [get]
+//	@Router			/domain/list [get]
 func GetUsernameListByTagHandler(c *fiber.Ctx) error {
 
 	tag_uuid := c.Query("uuid")

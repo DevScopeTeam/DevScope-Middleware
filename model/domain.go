@@ -1,19 +1,19 @@
 package model
 
-type Field struct {
+type Domain struct {
 	UUID     string `json:"uuid" gorm:"primaryKey" validate:"required"`
 	Username string `json:"username" gorm:"type:varchar(191); not null" validate:"required"`
 	TagUUID  string `json:"tag_uuid" gorm:"type:varchar(191); not null" validate:"required"`
 }
 
-type FieldResp struct {
-	Code int   `json:"code"`
-	Tag  Field `json:"field"`
+type DomainResp struct {
+	Code int    `json:"code"`
+	Tag  Domain `json:"domain"`
 }
 
-type FieldListResp struct {
-	Code int     `json:"code"`
-	List []Field `json:"list"`
+type DomainListResp struct {
+	Code int      `json:"code"`
+	List []Domain `json:"list"`
 }
 
 type UsernameListResp struct {

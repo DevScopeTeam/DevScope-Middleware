@@ -757,7 +757,7 @@ info:
   title: DevScope中间件
   version: v1.0.0
 paths:
-  /field/list:
+  /domain/list:
     get:
       consumes:
       - application/json
@@ -789,7 +789,7 @@ paths:
             $ref: '#/definitions/model.OperationResp'
       summary: 获取领域下的用户列表
       tags:
-      - Field
+      - Domain
   /github/user/events:
     get:
       consumes:

@@ -2,7 +2,7 @@ package method
 
 import "DevScope-Middleware/model"
 
-func AddField(field model.Field) error {
+func AddDomain(domain model.Domain) error {
 	db, err := getDB()
 	if err != nil {
 		return err
@@ -12,51 +12,35 @@ func AddField(field model.Field) error {
 	defer sqlDB.Close()
 
 	// 校验数据
-	if err := validate.Struct(field); err != nil {
+	if err := validate.Struct(domain); err != nil {
 		return err
 	}
 
-	if err := db.Create(&field).Error; err != nil {
-		return err
-	}
-
-	return nil
-}
-
-func GetField(uuid string) (model.Field, error) {
-	db, err := getDB()
-	if err != nil {
-		return model.Field{}, err
-	}
-	//结束后关闭 DB
-	sqlDB, _ := db.DB()
-	defer sqlDB.Close()
-
-	var field model.Field
-	if err := db.Where("uuid = ?", uuid).First(&field).Error; err != nil {
-		return model.Field{}, err
-	}
-
-	return field, nil
-}
-
-func DeleteField(uuid string) error {
-	db, err := getDB()
-	if err != nil {
-		return err
-	}
-	//结束后关闭 DB
-	sqlDB, _ := db.DB()
-	defer sqlDB.Close()
-
-	if err := db.Where("uuid = ?", uuid).Delete(&model.Field{}).Error; err != nil {
+	if err := db.Create(&domain).Error; err != nil {
 		return err
 	}
 
 	return nil
 }
 
-func UpdateField(field model.Field) error {
+func GetDomain(uuid string) (model.Domain, error) {
+	db, err := getDB()
+	if err != nil {
+		return model.Domain{}, err
+	}
+	//结束后关闭 DB
+	sqlDB, _ := db.DB()
+	defer sqlDB.Close()
+
+	var domain model.Domain
+	if err := db.Where("uuid = ?", uuid).First(&domain).Error; err != nil {
+		return model.Domain{}, err
+	}
+
+	return domain, nil
+}
+
+func DeleteDomain(uuid string) error {
 	db, err := getDB()
 	if err != nil {
 		return err
@@ -65,14 +49,30 @@ func UpdateField(field model.Field) error {
 	sqlDB, _ := db.DB()
 	defer sqlDB.Close()
 
-	if err := db.Model(&field).Where("uuid = ?", field.UUID).Updates(&field).Error; err != nil {
+	if err := db.Where("uuid = ?", uuid).Delete(&model.Domain{}).Error; err != nil {
 		return err
 	}
 
 	return nil
 }
 
-func GetFieldList(page, pageSize int) ([]model.Field, error) {
+func UpdateDomain(domain model.Domain) error {
+	db, err := getDB()
+	if err != nil {
+		return err
+	}
+	//结束后关闭 DB
+	sqlDB, _ := db.DB()
+	defer sqlDB.Close()
+
+	if err := db.Model(&domain).Where("uuid = ?", domain.UUID).Updates(&domain).Error; err != nil {
+		return err
+	}
+
+	return nil
+}
+
+func GetDomainList(page, pageSize int) ([]model.Domain, error) {
 	db, err := getDB()
 	if err != nil {
 		return nil, err
@@ -81,12 +81,12 @@ func GetFieldList(page, pageSize int) ([]model.Field, error) {
 	sqlDB, _ := db.DB()
 	defer sqlDB.Close()
 
-	var fields []model.Field
-	if err := db.Limit(pageSize).Offset((page - 1) * pageSize).Find(&fields).Error; err != nil {
+	var domains []model.Domain
+	if err := db.Limit(pageSize).Offset((page - 1) * pageSize).Find(&domains).Error; err != nil {
 		return nil, err
 	}
 
-	return fields, nil
+	return domains, nil
 }
 
 func GetUsernameListByTagUUID(tag_uuid string, page, pageSize int) ([]string, error) {
@@ -99,7 +99,7 @@ func GetUsernameListByTagUUID(tag_uuid string, page, pageSize int) ([]string, er
 	defer sqlDB.Close()
 
 	var usernames []string
-	if err := db.Model(&model.Field{}).Where("tag_uuid = ?", tag_uuid).Limit(pageSize).Offset((page-1)*pageSize).Pluck("username", &usernames).Error; err != nil {
+	if err := db.Model(&model.Domain{}).Where("tag_uuid = ?", tag_uuid).Limit(pageSize).Offset((page-1)*pageSize).Pluck("username", &usernames).Error; err != nil {
 		return nil, err
 	}
 

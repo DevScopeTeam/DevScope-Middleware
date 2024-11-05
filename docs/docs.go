@@ -15,7 +15,7 @@ const docTemplate = `{
     "host": "{{.Host}}",
     "basePath": "{{.BasePath}}",
     "paths": {
-        "/field/list": {
+        "/domain/list": {
             "get": {
                 "description": "获取领域下的用户列表",
                 "consumes": [
@@ -25,7 +25,7 @@ const docTemplate = `{
                     "application/json"
                 ],
                 "tags": [
-                    "Field"
+                    "Domain"
                 ],
                 "summary": "获取领域下的用户列表",
                 "parameters": [

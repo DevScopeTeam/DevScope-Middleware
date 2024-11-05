@@ -9,7 +9,7 @@ import (
 )
 
 func main2() {
-	fields := []string{
+	domains := []string{
 		"artificial-intelligence",
 		"machine-learning",
 		"data-science",
@@ -28,13 +28,13 @@ func main2() {
 		"quantum-computing",
 	}
 
-	for _, field := range fields {
+	for _, domain := range domains {
 		tag := model.Tag{
 			UUID: uuid.NewString(),
-			Name: field,
+			Name: domain,
 		}
 		method.AddTag(tag)
 	}
 
-	fmt.Println(fields)
+	fmt.Println(domains)
 }
