@@ -770,9 +770,9 @@ paths:
       - application/json
       description: 获取开发者领域排名
       parameters:
-      - description: 领域UUID
+      - description: 领域 TagUUID
         in: query
-        name: domain_uuid
+        name: tag_uuid
         required: true
         type: string
       - description: 页码（默认：1）

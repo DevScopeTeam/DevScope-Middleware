@@ -31,8 +31,8 @@ const docTemplate = `{
                 "parameters": [
                     {
                         "type": "string",
-                        "description": "领域UUID",
-                        "name": "domain_uuid",
+                        "description": "领域 TagUUID",
+                        "name": "tag_uuid",
                         "in": "query",
                         "required": true
                     },

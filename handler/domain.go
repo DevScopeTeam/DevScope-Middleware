@@ -53,7 +53,7 @@ func GetUsernameListByTagHandler(c *fiber.Ctx) error {
 //	@Tags			Domain
 //	@Accept			json
 //	@Produce		json
-//	@Param			domain_uuid	query		string	true	"领域UUID"
+//	@Param			tag_uuid	query		string	true	"领域 TagUUID"
 //	@Param			page		query		int		false	"页码（默认：1）"
 //	@Param			pageSize	query		int		false	"每页数量（默认：10）"
 //	@Success		200			{object}	model.RankListResp
@@ -61,17 +61,17 @@ func GetUsernameListByTagHandler(c *fiber.Ctx) error {
 //	@Router			/domain/list [get]
 func GetUserRankListByDomainHandler(c *fiber.Ctx) error {
 	// 获取参数
-	domain_uuid := c.Query("domain_uuid")
+	tag_uuid := c.Query("tag_uuid")
 	page := c.QueryInt("page", 1)
 	pageSize := c.QueryInt("pageSize", 10)
-	if domain_uuid == "" {
+	if tag_uuid == "" {
 		return c.JSON(model.OperationResp{
 			Code: 400,
 			Msg:  "domain is empty",
 		})
 	}
 
-	ranks, err := method.GetUserRankListByTagUUID(domain_uuid, page, pageSize)
+	ranks, err := method.GetUserRankListByTagUUID(tag_uuid, page, pageSize)
 	if err != nil {
 		return c.JSON(model.OperationResp{
 			Code: 400,
