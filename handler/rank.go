@@ -68,21 +68,8 @@ func GetUserScoreHandler(c *fiber.Ctx) error {
 //	@Router			/rank/list [get]
 func GetUserRankListHandler(c *fiber.Ctx) error {
 	// 获取参数
-	page, err := c.ParamsInt("page", 1)
-	if err != nil {
-		return c.JSON(model.OperationResp{
-			Code: 400,
-			Msg:  "参数错误",
-		})
-	}
-
-	pageSize, err := c.ParamsInt("pageSize", 10)
-	if err != nil {
-		return c.JSON(model.OperationResp{
-			Code: 400,
-			Msg:  "参数错误",
-		})
-	}
+	page := c.QueryInt("page", 1)
+	pageSize := c.QueryInt("pageSize", 10)
 
 	ranks, err := method.GetRankList(page, pageSize)
 	if err != nil {
