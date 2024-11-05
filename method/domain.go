@@ -128,6 +128,45 @@ func GetUsernameListByTagUUID(tag_uuid string, page, pageSize int) ([]string, er
 	return usernames, nil
 }
 
+func GetUserRankListByTagUUID(tag_uuid string, page, pageSize int) ([]model.DeveloperRank, error) {
+	db, err := getDB()
+	if err != nil {
+		return nil, err
+	}
+	sqlDB, _ := db.DB()
+	defer sqlDB.Close()
+
+	var rank_list []model.DeveloperRank
+	uname_list, err := GetUsernameListByTagUUID(tag_uuid, page, 1000000)
+	if err != nil {
+		return nil, err
+	}
+
+	for _, uname := range uname_list {
+		rank, err := GetRank(uname)
+		if err != nil {
+			return nil, err
+		}
+		rank_list = append(rank_list, rank)
+	}
+
+	// 排序
+	for i := 0; i < len(rank_list)-1; i++ {
+		for j := 0; j < len(rank_list)-i-1; j++ {
+			if rank_list[j].Overall < rank_list[j+1].Overall {
+				rank_list[j], rank_list[j+1] = rank_list[j+1], rank_list[j]
+			}
+		}
+	}
+
+	// 分页
+	if len(rank_list) > pageSize {
+		rank_list = rank_list[(page-1)*pageSize : page*pageSize]
+	}
+
+	return rank_list, nil
+}
+
 var domain_prompt = `根据用户提供的所有项目信息推测其开发领域，并直接返回json。
 
 领域集合: ["artificial-intelligence", "machine-learning", "data-science", "software-development", "web-development", "mobile-development", "game-development", "blockchain", "cybersecurity", "cloud-computing", "devops", "database", "internet-of-things", "embedded-systems", "robotics", "quantum-computing"]

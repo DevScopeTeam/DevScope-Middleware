@@ -37,4 +37,5 @@ func regiserService(app *fiber.App) {
 
 	// Domain
 	domain.Get("/users", handler.GetUsernameListByTagHandler)
+	domain.Get("/list", handler.GetUserRankListByDomainHandler)
 }
