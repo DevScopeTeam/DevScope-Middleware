@@ -23,14 +23,6 @@ type CommunityInfluence struct {
 	Watchers  int `json:"watchers"`  // 项目的Watcher数量
 }
 
-// Score 表示综合评分
-type Score struct {
-	ProjectImportance  float64 `json:"project"`   // 项目重要性评分
-	CodeContribution   float64 `json:"code"`      // 代码贡献量评分
-	CommunityInfluence float64 `json:"influence"` // 社区影响力评分
-	Overall            float64 `json:"overall"`   // 综合评分
-}
-
 // DetailRank 表示详细评分
 type DetailRank struct {
 	ProjectImportance  ProjectImportance  `json:"projectImportance"`  // 项目重要性评分
@@ -40,12 +32,16 @@ type DetailRank struct {
 
 // DeveloperRank 表示开发者的评分
 type DeveloperRank struct {
-	Username string `json:"username"` // 开发者用户名
-	Score    Score  `json:"score"`
+	Username           string  `json:"username" gorm:"primaryKey" validate:"required"` // 用户名
+	ProjectImportance  float64 `json:"project" validate:"required"`                    // 项目重要性评分
+	CodeContribution   float64 `json:"code" validate:"required"`                       // 代码贡献量评分
+	CommunityInfluence float64 `json:"influence" validate:"required"`                  // 社区影响力评分
+	Overall            float64 `json:"overall" validate:"required"`                    // 综合评分
+	UpdatedAt          XTime   `json:"updated_at,omitempty" gorm:"autoUpdateTime"`     // 更新时间
 }
 
 // CalculateOverallScore 计算综合评分
-func (s *Score) CalculateOverallScore() {
+func (s *DeveloperRank) CalculateOverallScore() {
 	// 假设权重分别为：项目重要性0.3，代码贡献0.4，社区影响力0.3
 	weights := [3]float64{0.3, 0.4, 0.3}
 	s.Overall = s.ProjectImportance*weights[0] + s.CodeContribution*weights[1] + s.CommunityInfluence*weights[2]

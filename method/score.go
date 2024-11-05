@@ -3,6 +3,7 @@ package method
 import (
 	"DevScope-Middleware/model"
 	github_model "DevScope-Middleware/model/github"
+	"DevScope-Middleware/utils"
 	"encoding/json"
 	"fmt"
 )
@@ -66,7 +67,7 @@ func CalculateDeveloperScore(username string) (model.DeveloperRank, error) {
 		detail.ProjectImportance.Watchers += repo.WatchersCount
 		detail.ProjectImportance.Subscribers += repo.SubscribersCount
 	}
-	rank.Score.ProjectImportance = detail.ProjectImportance.CalculateScore()
+	rank.ProjectImportance = detail.ProjectImportance.CalculateScore()
 
 	// 计算代码贡献分
 	if commit_count, precount, error := GetUserCommitAndPRCounts(username); error != nil {
@@ -75,16 +76,17 @@ func CalculateDeveloperScore(username string) (model.DeveloperRank, error) {
 		detail.CodeContribution.CommitCount = commit_count
 		detail.CodeContribution.PrCount = precount
 	}
-	rank.Score.CodeContribution = detail.CodeContribution.CalculateScore()
+	rank.CodeContribution = detail.CodeContribution.CalculateScore()
 
 	// 计算社区影响力
 	detail.CommunityInfluence.Followers = user.Followers
 	detail.CommunityInfluence.Stars = detail.ProjectImportance.Stars
 	detail.CommunityInfluence.Watchers = detail.ProjectImportance.Watchers
-	rank.Score.CommunityInfluence = detail.CommunityInfluence.CalculateScore()
+	rank.CommunityInfluence = detail.CommunityInfluence.CalculateScore()
 
 	// 综合评分
-	rank.Score.CalculateOverallScore()
+	rank.CalculateOverallScore()
+	rank.UpdatedAt = utils.GetXTimeNow()
 
 	return rank, nil
 }

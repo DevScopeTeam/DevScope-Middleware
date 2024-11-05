@@ -663,21 +663,6 @@ definitions:
     type: object
   model.DeveloperRank:
     properties:
-      score:
-        $ref: '#/definitions/model.Score'
-      username:
-        description: 开发者用户名
-        type: string
-    type: object
-  model.OperationResp:
-    properties:
-      code:
-        type: integer
-      msg:
-        type: string
-    type: object
-  model.Score:
-    properties:
       code:
         description: 代码贡献量评分
         type: number
@@ -690,6 +675,31 @@ definitions:
       project:
         description: 项目重要性评分
         type: number
+      updated_at:
+        allOf:
+        - $ref: '#/definitions/model.XTime'
+        description: 更新时间
+      username:
+        description: 用户名
+        type: string
+    required:
+    - code
+    - influence
+    - overall
+    - project
+    - username
+    type: object
+  model.OperationResp:
+    properties:
+      code:
+        type: integer
+      msg:
+        type: string
+    type: object
+  model.XTime:
+    properties:
+      time.Time:
+        type: string
     type: object
 host: 127.0.0.1:9000
 info:

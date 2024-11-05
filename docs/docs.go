@@ -1210,29 +1210,13 @@ const docTemplate = `{
         },
         "model.DeveloperRank": {
             "type": "object",
-            "properties": {
-                "score": {
-                    "$ref": "#/definitions/model.Score"
-                },
-                "username": {
-                    "description": "开发者用户名",
-                    "type": "string"
-                }
-            }
-        },
-        "model.OperationResp": {
-            "type": "object",
-            "properties": {
-                "code": {
-                    "type": "integer"
-                },
-                "msg": {
-                    "type": "string"
-                }
-            }
-        },
-        "model.Score": {
-            "type": "object",
+            "required": [
+                "code",
+                "influence",
+                "overall",
+                "project",
+                "username"
+            ],
             "properties": {
                 "code": {
                     "description": "代码贡献量评分",
@@ -1249,6 +1233,37 @@ const docTemplate = `{
                 "project": {
                     "description": "项目重要性评分",
                     "type": "number"
+                },
+                "updated_at": {
+                    "description": "更新时间",
+                    "allOf": [
+                        {
+                            "$ref": "#/definitions/model.XTime"
+                        }
+                    ]
+                },
+                "username": {
+                    "description": "用户名",
+                    "type": "string"
+                }
+            }
+        },
+        "model.OperationResp": {
+            "type": "object",
+            "properties": {
+                "code": {
+                    "type": "integer"
+                },
+                "msg": {
+                    "type": "string"
+                }
+            }
+        },
+        "model.XTime": {
+            "type": "object",
+            "properties": {
+                "time.Time": {
+                    "type": "string"
                 }
             }
         }
