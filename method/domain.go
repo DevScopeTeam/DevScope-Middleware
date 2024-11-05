@@ -45,6 +45,23 @@ func GetDomain(uuid string) (model.Domain, error) {
 	return domain, nil
 }
 
+func GetDomainUUID(name string) (string, error) {
+	db, err := getDB()
+	if err != nil {
+		return "", err
+	}
+	//结束后关闭 DB
+	sqlDB, _ := db.DB()
+	defer sqlDB.Close()
+
+	var tag model.Tag
+	if err := db.Where("name = ?", name).First(&tag).Error; err != nil {
+		return "", err
+	}
+
+	return tag.UUID, nil
+}
+
 func DeleteDomain(uuid string) error {
 	db, err := getDB()
 	if err != nil {

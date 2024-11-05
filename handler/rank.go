@@ -5,6 +5,7 @@ import (
 	"DevScope-Middleware/model"
 
 	"github.com/gofiber/fiber/v2"
+	"github.com/google/uuid"
 )
 
 // GetUserScoreHandler godoc
@@ -42,8 +43,25 @@ func GetUserScoreHandler(c *fiber.Ctx) error {
 			})
 		}
 
+		// 分析领域
+		domains, err := method.AnalyzeUserDomainList(username)
+		if err != nil {
+			return c.JSON(model.OperationResp{
+				Code: 400,
+				Msg:  err.Error(),
+			})
+		}
+
 		// 存储至数据库
 		method.AddRank(score)
+		for _, domain_name := range domains {
+			domain_uuid, _ := method.GetDomainUUID(domain_name)
+			method.AddDomain(model.Domain{
+				UUID:     uuid.NewString(),
+				Username: username,
+				TagUUID:  domain_uuid,
+			})
+		}
 	}
 
 	// 返回结果
