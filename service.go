@@ -22,7 +22,7 @@ func regiserService(app *fiber.App) {
 	github_user.Get("/info", handler.GetDeveloperInfoHandler)
 	github_user.Get("/repos", handler.GetUserReposHandler)
 	github_user.Get("/events", handler.GetUserEventsHandler)
-	github_user.Get("/nation", handler.GetUserNationalityHandler)
+	github_user.Get("/nation", handler.GetUserNationHandler)
 
 	// Rank
 	rank.Get("/score", handler.GetUserScoreHandler)
