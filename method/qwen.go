@@ -21,7 +21,6 @@ type RequestBody struct {
 }
 
 func RequestQwen(system_prompt, user_prompt string) (string, error) {
-	fmt.Println(config.Qwen_API_KEY)
 	// 创建 HTTP 客户端
 	client := &http.Client{}
 	// 构建请求体

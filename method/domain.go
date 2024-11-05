@@ -1,6 +1,11 @@
 package method
 
-import "DevScope-Middleware/model"
+import (
+	"DevScope-Middleware/model"
+	"strings"
+
+	"github.com/tidwall/gjson"
+)
 
 func AddDomain(domain model.Domain) error {
 	db, err := getDB()
@@ -104,4 +109,53 @@ func GetUsernameListByTagUUID(tag_uuid string, page, pageSize int) ([]string, er
 	}
 
 	return usernames, nil
+}
+
+var domain_prompt = `根据用户提供的所有项目信息推测其开发领域，并直接返回json。
+
+领域集合: ["artificial-intelligence", "machine-learning", "data-science", "software-development", "web-development", "mobile-development", "game-development", "blockchain", "cybersecurity", "cloud-computing", "devops", "database", "internet-of-things", "embedded-systems", "robotics", "quantum-computing"]
+
+返回结果样例1:
+{
+  "code": 200,
+  "list": [
+    "domain1",
+    "domain2",
+	"domain3"
+  ]
+}
+
+返回结果样例2:
+{
+  "code": 200,
+  "list": []
+}`
+
+// 分析用户领域
+func AnalyzeUserDomainList(username string) ([]string, error) {
+	descriptions, err := GetUserRepoDescriptions(username)
+	if err != nil {
+		return nil, err
+	}
+
+	prompt := ``
+	for repo_name, description := range descriptions {
+		prompt += repo_name + ": " + description + "\n"
+	}
+
+	resp, err := RequestQwen(domain_prompt, prompt)
+	if err != nil {
+		return nil, err
+	}
+
+	resp = strings.TrimSpace(resp)
+	list := gjson.Get(resp, "list").Array()
+
+	// 转换为 string 数组
+	var result []string
+	for _, item := range list {
+		result = append(result, item.Str)
+	}
+
+	return result, nil
 }

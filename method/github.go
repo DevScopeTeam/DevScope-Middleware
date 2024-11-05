@@ -110,7 +110,6 @@ func GetUserRecentRepos(username string) ([]github_model.Repo, error) {
 			}
 		}
 	}
-	// fmt.Println(id_list)
 
 	return repos, nil
 }
