@@ -11,7 +11,7 @@ import (
 
 var system_prompt = `根据用户提供的信息推测归属国家，并直接返回json。
 
-参考国家名称集合：["China", "United States", "India", "Indonesia", "Pakistan", "Brazil", "Nigeria", "Bangladesh", "Russia", "Mexico", "Japan", "Philippines", "Vietnam", "Ethiopia", "Egypt", "Germany", "Iran", "Turkey", "Thailand", "United Kingdom", "France", "Italy", "South Africa", "Myanmar", "South Korea", "Colombia", "Spain", "Ukraine", "Tanzania", "Argentina", "Kenya", "Poland", "Algeria", "Canada", "Morocco", "Sudan", "Peru", "Uzbekistan", "Malaysia", "Venezuela", "Nepal", "North Korea", "Mozambique", "Afghanistan", "Australia", "Madagascar", "Sri Lanka", "Chile", "Cameroon", "Romania", "Belgium", "Iraq", "Czech Republic", "Netherlands", "Burkina Faso", "Greece"]
+参考国家名称集合：["China", "United States", "India", "Indonesia", "Pakistan", "Brazil", "Russia", "Mexico", "Japan", "Philippines", "Vietnam", "Ethiopia", "Egypt", "Germany", "Iran", "Turkey", "Thailand", "United Kingdom", "France", "Italy", "South Africa", "Myanmar", "South Korea", "Colombia", "Spain", "Ukraine", "Tanzania", "Argentina", "Kenya", "Poland", "Algeria", "Canada", "Morocco", "Sudan", "Peru", "Uzbekistan", "Malaysia", "Venezuela", "Australia", "Chile", "Romania", "Belgium", "Iraq", "Netherlands"]
 
 返回结果样例1：
 {
