@@ -709,6 +709,32 @@ definitions:
           $ref: '#/definitions/model.DeveloperRank'
         type: array
     type: object
+  model.Tag:
+    properties:
+      name:
+        type: string
+      uuid:
+        type: string
+    required:
+    - name
+    - uuid
+    type: object
+  model.TagListResp:
+    properties:
+      code:
+        type: integer
+      list:
+        items:
+          $ref: '#/definitions/model.Tag'
+        type: array
+    type: object
+  model.TagResp:
+    properties:
+      code:
+        type: integer
+      tag:
+        $ref: '#/definitions/model.Tag'
+    type: object
   model.XTime:
     properties:
       time.Time:
@@ -879,6 +905,50 @@ paths:
       summary: 获取开发者评分
       tags:
       - Rank
+  /tag/get:
+    get:
+      consumes:
+      - application/json
+      description: 获取Tag
+      parameters:
+      - description: UUID
+        in: query
+        name: uuid
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/model.TagResp'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/model.OperationResp'
+      summary: 获取Tag
+      tags:
+      - Tag
+  /tag/list:
+    get:
+      consumes:
+      - application/json
+      description: 获取Tag列表
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/model.TagListResp'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/model.OperationResp'
+      summary: 获取Tag列表
+      tags:
+      - Tag
 securityDefinitions:
   ApiKeyAuth:
     in: header

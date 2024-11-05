@@ -16,6 +16,7 @@ func regiserService(app *fiber.App) {
 	// 注册路由
 	github := app.Group("/github")
 	rank := app.Group("/rank")
+	tag := app.Group("/tag")
 
 	// Github User
 	github_user := github.Group("/user")
@@ -27,4 +28,8 @@ func regiserService(app *fiber.App) {
 	// Rank
 	rank.Get("/score", handler.GetUserScoreHandler)
 	rank.Get("/list", handler.GetUserRankListHandler)
+
+	// Tag
+	tag.Get("/list", handler.GetTagListHandler)
+	tag.Get("/get", handler.GetTagHandler)
 }

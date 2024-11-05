@@ -247,6 +247,73 @@
                     }
                 }
             }
+        },
+        "/tag/get": {
+            "get": {
+                "description": "获取Tag",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Tag"
+                ],
+                "summary": "获取Tag",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "UUID",
+                        "name": "uuid",
+                        "in": "query",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/model.TagResp"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/model.OperationResp"
+                        }
+                    }
+                }
+            }
+        },
+        "/tag/list": {
+            "get": {
+                "description": "获取Tag列表",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Tag"
+                ],
+                "summary": "获取Tag列表",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/model.TagListResp"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/model.OperationResp"
+                        }
+                    }
+                }
+            }
         }
     },
     "definitions": {
@@ -1318,6 +1385,46 @@
                     "items": {
                         "$ref": "#/definitions/model.DeveloperRank"
                     }
+                }
+            }
+        },
+        "model.Tag": {
+            "type": "object",
+            "required": [
+                "name",
+                "uuid"
+            ],
+            "properties": {
+                "name": {
+                    "type": "string"
+                },
+                "uuid": {
+                    "type": "string"
+                }
+            }
+        },
+        "model.TagListResp": {
+            "type": "object",
+            "properties": {
+                "code": {
+                    "type": "integer"
+                },
+                "list": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/model.Tag"
+                    }
+                }
+            }
+        },
+        "model.TagResp": {
+            "type": "object",
+            "properties": {
+                "code": {
+                    "type": "integer"
+                },
+                "tag": {
+                    "$ref": "#/definitions/model.Tag"
                 }
             }
         },

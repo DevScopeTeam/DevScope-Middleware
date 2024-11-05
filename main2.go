@@ -1,16 +1,40 @@
 package main
 
-// func main() {
-// fmt.Println(method.CalculateWorkWeightInRepo("stulzq", "dotnetcore", "CanalSharp"))
-// fmt.Println(method.CalculateDeveloperScore("zjy2414"))
+import (
+	"DevScope-Middleware/method"
+	"DevScope-Middleware/model"
+	"fmt"
 
-// fmt.Println(method.GetUserEvents("morri3"))
-// fmt.Println("***********")
-// repos, err := method.GetUserRecentRepos("rsonghuster")
-// if err != nil {
-// 	fmt.Println(err)
-// }
-// for _, repo := range repos {
-// 	fmt.Println(repo.Owner.Login, "|", repo.Name)
-// }
-// }
+	"github.com/google/uuid"
+)
+
+func main2() {
+	fields := []string{
+		"artificial-intelligence",
+		"machine-learning",
+		"data-science",
+		"software-development",
+		"web-development",
+		"mobile-development",
+		"game-development",
+		"blockchain",
+		"cybersecurity",
+		"cloud-computing",
+		"devops",
+		"database",
+		"internet-of-things",
+		"embedded-systems",
+		"robotics",
+		"quantum-computing",
+	}
+
+	for _, field := range fields {
+		tag := model.Tag{
+			UUID: uuid.NewString(),
+			Name: field,
+		}
+		method.AddTag(tag)
+	}
+
+	fmt.Println(fields)
+}

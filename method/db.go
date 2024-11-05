@@ -26,6 +26,7 @@ func init() {
 
 	// 迁移 schema
 	db.AutoMigrate(&model.DeveloperRank{})
+	db.AutoMigrate(&model.Tag{})
 
 	// 执行原生 SQL 以创建外键
 }
