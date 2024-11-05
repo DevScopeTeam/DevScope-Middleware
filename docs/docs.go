@@ -192,6 +192,12 @@ const docTemplate = `{
                         "description": "每页数量（默认：10）",
                         "name": "pageSize",
                         "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "国籍",
+                        "name": "nation",
+                        "in": "query"
                     }
                 ],
                 "responses": {

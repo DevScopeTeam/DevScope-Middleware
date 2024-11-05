@@ -836,6 +836,10 @@ paths:
         in: query
         name: pageSize
         type: integer
+      - description: 国籍
+        in: query
+        name: nation
+        type: string
       produces:
       - application/json
       responses:
