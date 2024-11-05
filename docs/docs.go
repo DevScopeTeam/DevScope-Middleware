@@ -1256,6 +1256,7 @@ const docTemplate = `{
             "required": [
                 "code",
                 "influence",
+                "nation",
                 "overall",
                 "project",
                 "username"
@@ -1268,6 +1269,10 @@ const docTemplate = `{
                 "influence": {
                     "description": "社区影响力评分",
                     "type": "number"
+                },
+                "nation": {
+                    "description": "国家",
+                    "type": "string"
                 },
                 "overall": {
                     "description": "综合评分",
