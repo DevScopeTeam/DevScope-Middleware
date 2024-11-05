@@ -19,7 +19,7 @@ import (
 //	@Param			pageSize	query		int		false	"每页数量（默认：10）"
 //	@Success		200			{object}	model.UsernameListResp
 //	@Failure		400			{object}	model.OperationResp
-//	@Router			/domain/list [get]
+//	@Router			/domain/users [get]
 func GetUsernameListByTagHandler(c *fiber.Ctx) error {
 
 	tag_uuid := c.Query("uuid")

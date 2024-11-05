@@ -764,7 +764,7 @@ info:
   title: DevScope中间件
   version: v1.0.0
 paths:
-  /domain/list:
+  /domain/users:
     get:
       consumes:
       - application/json

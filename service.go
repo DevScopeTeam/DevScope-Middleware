@@ -36,5 +36,5 @@ func regiserService(app *fiber.App) {
 	tag.Get("/get", handler.GetTagHandler)
 
 	// Domain
-	domain.Get("/list", handler.GetUsernameListByTagHandler)
+	domain.Get("/users", handler.GetUsernameListByTagHandler)
 }

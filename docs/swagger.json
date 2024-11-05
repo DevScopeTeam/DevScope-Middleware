@@ -9,7 +9,7 @@
     "host": "127.0.0.1:9000",
     "basePath": "/",
     "paths": {
-        "/domain/list": {
+        "/domain/users": {
             "get": {
                 "description": "获取领域下的用户列表",
                 "consumes": [
