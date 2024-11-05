@@ -67,7 +67,7 @@ func GetUserRankListByDomainHandler(c *fiber.Ctx) error {
 	if tag_uuid == "" {
 		return c.JSON(model.OperationResp{
 			Code: 400,
-			Msg:  "domain is empty",
+			Msg:  "tag_uuid is empty",
 		})
 	}
 
