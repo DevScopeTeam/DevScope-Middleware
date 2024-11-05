@@ -32,13 +32,13 @@ type DetailRank struct {
 
 // DeveloperRank 表示开发者的评分
 type DeveloperRank struct {
-	Username           string  `json:"username" gorm:"primaryKey" validate:"required"` // 用户名
-	ProjectImportance  float64 `json:"project" validate:"required"`                    // 项目重要性评分
-	CodeContribution   float64 `json:"code" validate:"required"`                       // 代码贡献量评分
-	CommunityInfluence float64 `json:"influence" validate:"required"`                  // 社区影响力评分
-	Overall            float64 `json:"overall" validate:"required"`                    // 综合评分
-	Nation             string  `json:"nation,omitempty"  validate:"required"`          // 国家
-	UpdatedAt          XTime   `json:"updated_at,omitempty" gorm:"autoUpdateTime"`     // 更新时间
+	Username           string  `json:"username" gorm:"primaryKey" validate:"required"`                 // 用户名
+	ProjectImportance  float64 `json:"project" validate:"required"`                                    // 项目重要性评分
+	CodeContribution   float64 `json:"code" validate:"required"`                                       // 代码贡献量评分
+	CommunityInfluence float64 `json:"influence" validate:"required"`                                  // 社区影响力评分
+	Overall            float64 `json:"overall" validate:"required"`                                    // 综合评分
+	Nation             string  `json:"nation,omitempty"  validate:"required" gorm:"type:varchar(191)"` // 国家
+	UpdatedAt          XTime   `json:"updated_at,omitempty" gorm:"autoUpdateTime"`                     // 更新时间
 }
 
 // RankListResp 表示开发者排名列表的响应
