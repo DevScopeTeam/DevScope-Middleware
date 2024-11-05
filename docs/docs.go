@@ -181,7 +181,7 @@ const docTemplate = `{
         },
         "/github/user/repos": {
             "get": {
-                "description": "获取仓库和语言偏好",
+                "description": "获取用户的仓库列表",
                 "consumes": [
                     "application/json"
                 ],
@@ -191,7 +191,7 @@ const docTemplate = `{
                 "tags": [
                     "Github"
                 ],
-                "summary": "获取仓库和语言偏好",
+                "summary": "获取用户的仓库列表",
                 "parameters": [
                     {
                         "type": "string",

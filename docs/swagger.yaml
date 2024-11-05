@@ -869,7 +869,7 @@ paths:
     get:
       consumes:
       - application/json
-      description: 获取仓库和语言偏好
+      description: 获取用户的仓库列表
       parameters:
       - description: Github用户名
         in: query
@@ -887,7 +887,7 @@ paths:
           description: Bad Request
           schema:
             $ref: '#/definitions/model.OperationResp'
-      summary: 获取仓库和语言偏好
+      summary: 获取用户的仓库列表
       tags:
       - Github
   /rank/list:

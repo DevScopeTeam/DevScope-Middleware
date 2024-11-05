@@ -72,8 +72,8 @@ func GetUserEventsHandler(c *fiber.Ctx) error {
 
 // GetUserReposHandler godoc
 //
-//	@Summary		获取仓库和语言偏好
-//	@Description	获取仓库和语言偏好
+//	@Summary		获取用户的仓库列表
+//	@Description	获取用户的仓库列表
 //	@Tags			Github
 //	@Accept			json
 //	@Produce		json
