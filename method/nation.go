@@ -24,7 +24,7 @@ var system_prompt = `根据用户提供的信息推测归属国家，并直接�
 }`
 
 // 获取开发者国籍
-func GetUserNationality(username string) (string, error) {
+func GetUserNation(username string) (string, error) {
 	endpoint := fmt.Sprintf("/users/%s", username)
 	data, err := makeRequest(endpoint)
 	if err != nil {

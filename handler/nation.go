@@ -7,7 +7,7 @@ import (
 	"github.com/gofiber/fiber/v2"
 )
 
-// GetUserNationalityHandler godoc
+// GetUserNationHandler godoc
 //
 //	@Summary		获取开发者国籍
 //	@Description	获取开发者国籍
@@ -18,12 +18,12 @@ import (
 //	@Success		200			{object}	model.DevNationalityResp
 //	@Failure		400			{object}	model.OperationResp
 //	@Router			/github/user/nation [get]
-func GetUserNationalityHandler(c *fiber.Ctx) error {
+func GetUserNationHandler(c *fiber.Ctx) error {
 	// 获取参数
 	username := c.Query("username")
 
 	// 调用方法
-	nationality, err := method.GetUserNationality(username)
+	nationality, err := method.GetUserNation(username)
 	if err != nil {
 		return c.JSON(model.OperationResp{
 			Code: 400,

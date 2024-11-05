@@ -37,6 +37,8 @@ type DeveloperRank struct {
 	CodeContribution   float64 `json:"code" validate:"required"`                       // 代码贡献量评分
 	CommunityInfluence float64 `json:"influence" validate:"required"`                  // 社区影响力评分
 	Overall            float64 `json:"overall" validate:"required"`                    // 综合评分
+	Domain             string  `json:"domain,omitempty"  validate:"required"`          // 领域
+	Nation             string  `json:"nation,omitempty"  validate:"required"`          // 国家
 	UpdatedAt          XTime   `json:"updated_at,omitempty" gorm:"autoUpdateTime"`     // 更新时间
 }
 
