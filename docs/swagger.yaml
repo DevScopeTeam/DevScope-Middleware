@@ -824,11 +824,11 @@ paths:
       - application/json
       description: 获取开发者排名
       parameters:
-      - description: 页码
+      - description: 页码（默认：1）
         in: query
         name: page
         type: integer
-      - description: 每页数量
+      - description: 每页数量（默认：10）
         in: query
         name: pageSize
         type: integer

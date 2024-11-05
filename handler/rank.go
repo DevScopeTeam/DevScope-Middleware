@@ -50,8 +50,8 @@ func GetUserScoreHandler(c *fiber.Ctx) error {
 //	@Tags			Rank
 //	@Accept			json
 //	@Produce		json
-//	@Param			page		query		int	false	"页码"
-//	@Param			pageSize	query		int	false	"每页数量"
+//	@Param			page		query		int	false	"页码（默认：1）"
+//	@Param			pageSize	query		int	false	"每页数量（默认：10）"
 //	@Success		200			{object}	model.RankListResp
 //	@Failure		400			{object}	model.OperationResp
 //
