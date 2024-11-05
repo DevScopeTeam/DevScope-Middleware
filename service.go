@@ -17,6 +17,7 @@ func regiserService(app *fiber.App) {
 	github := app.Group("/github")
 	rank := app.Group("/rank")
 	tag := app.Group("/tag")
+	field := app.Group("/field")
 
 	// Github User
 	github_user := github.Group("/user")
@@ -32,4 +33,7 @@ func regiserService(app *fiber.App) {
 	// Tag
 	tag.Get("/list", handler.GetTagListHandler)
 	tag.Get("/get", handler.GetTagHandler)
+
+	// Field
+	field.Get("/list", handler.GetUsernameListByTagHandler)
 }

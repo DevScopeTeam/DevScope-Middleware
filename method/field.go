@@ -89,7 +89,7 @@ func GetFieldList(page, pageSize int) ([]model.Field, error) {
 	return fields, nil
 }
 
-func GetUsernameListByTagUUID(tag_uuid string) ([]string, error) {
+func GetUsernameListByTagUUID(tag_uuid string, page, pageSize int) ([]string, error) {
 	db, err := getDB()
 	if err != nil {
 		return nil, err
@@ -99,9 +99,9 @@ func GetUsernameListByTagUUID(tag_uuid string) ([]string, error) {
 	defer sqlDB.Close()
 
 	var usernames []string
-	if err := db.Model(&model.Field{}).Where("tag_uuid = ?", tag_uuid).Pluck("username", &usernames).Error; err != nil {
+	if err := db.Model(&model.Field{}).Where("tag_uuid = ?", tag_uuid).Limit(pageSize).Offset((page-1)*pageSize).Pluck("username", &usernames).Error; err != nil {
 		return nil, err
 	}
 
-	return usernames, nil 
+	return usernames, nil
 }

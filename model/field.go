@@ -15,3 +15,8 @@ type FieldListResp struct {
 	Code int     `json:"code"`
 	List []Field `json:"list"`
 }
+
+type UsernameListResp struct {
+	Code int      `json:"code"`
+	List []string `json:"list"`
+}

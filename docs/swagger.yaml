@@ -735,6 +735,15 @@ definitions:
       tag:
         $ref: '#/definitions/model.Tag'
     type: object
+  model.UsernameListResp:
+    properties:
+      code:
+        type: integer
+      list:
+        items:
+          type: string
+        type: array
+    type: object
   model.XTime:
     properties:
       time.Time:
@@ -748,6 +757,39 @@ info:
   title: DevScope中间件
   version: v1.0.0
 paths:
+  /field/list:
+    get:
+      consumes:
+      - application/json
+      description: 获取领域下的用户列表
+      parameters:
+      - description: TagnUUID
+        in: query
+        name: uuid
+        required: true
+        type: string
+      - description: 页码（默认：1）
+        in: query
+        name: page
+        type: integer
+      - description: 每页数量（默认：10）
+        in: query
+        name: pageSize
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/model.UsernameListResp'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/model.OperationResp'
+      summary: 获取领域下的用户列表
+      tags:
+      - Field
   /github/user/events:
     get:
       consumes:
