@@ -4,7 +4,6 @@ import (
 	"DevScope-Middleware/config"
 	"bytes"
 	"encoding/json"
-	"fmt"
 	"io"
 	"net/http"
 
