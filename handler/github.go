@@ -100,3 +100,39 @@ func GetUserReposHandler(c *fiber.Ctx) error {
 		List: repos,
 	})
 }
+
+// GetUserRepoHandler godoc
+//
+//	@Summary		获取用户的仓库信息
+//	@Description	获取用户的仓库信息
+//	@Tags			Github
+//	@Accept			json
+//	@Produce		json
+//	@Param			owner	query		string	true	"仓库拥有者"
+//	@Param			repo	query		string	true	"仓库名"
+//	@Success		200		{object}	github_model.RepoResp
+//	@Failure		400		{object}	model.OperationResp
+//	@Router			/github/user/repo [get]
+func GetUserRepoHandler(c *fiber.Ctx) error {
+	owner := c.Query("owner")
+	repo := c.Query("repo")
+	if owner == "" || repo == "" {
+		return c.JSON(model.OperationResp{
+			Code: 400,
+			Msg:  "owner or repo is empty",
+		})
+	}
+
+	repo_info, err := method.GetRepo(owner, repo)
+	if err != nil {
+		return c.JSON(model.OperationResp{
+			Code: 400,
+			Msg:  err.Error(),
+		})
+	}
+
+	return c.JSON(github_model.RepoResp{
+		Code: 200,
+		Repo: repo_info,
+	})
+}

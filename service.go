@@ -23,6 +23,7 @@ func regiserService(app *fiber.App) {
 	github_user := github.Group("/user")
 	github_user.Get("/info", handler.GetDeveloperInfoHandler)
 	github_user.Get("/repos", handler.GetUserReposHandler)
+	github_user.Get("/repo", handler.GetUserRepoHandler)
 	github_user.Get("/events", handler.GetUserEventsHandler)
 	github_user.Get("/nation", handler.GetUserNationHandler)
 

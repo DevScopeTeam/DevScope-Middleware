@@ -179,6 +179,51 @@ const docTemplate = `{
                 }
             }
         },
+        "/github/user/repo": {
+            "get": {
+                "description": "获取用户的仓库信息",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Github"
+                ],
+                "summary": "获取用户的仓库信息",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "仓库拥有者",
+                        "name": "owner",
+                        "in": "query",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
+                        "description": "仓库名",
+                        "name": "repo",
+                        "in": "query",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/github.RepoResp"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/model.OperationResp"
+                        }
+                    }
+                }
+            }
+        },
         "/github/user/repos": {
             "get": {
                 "description": "获取用户的仓库列表",
@@ -866,6 +911,17 @@ const docTemplate = `{
                     "items": {
                         "$ref": "#/definitions/github.Repo"
                     }
+                }
+            }
+        },
+        "github.RepoResp": {
+            "type": "object",
+            "properties": {
+                "code": {
+                    "type": "integer"
+                },
+                "repo": {
+                    "$ref": "#/definitions/github.Repo"
                 }
             }
         },

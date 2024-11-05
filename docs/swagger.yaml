@@ -327,6 +327,13 @@ definitions:
           $ref: '#/definitions/github.Repo'
         type: array
     type: object
+  github.RepoResp:
+    properties:
+      code:
+        type: integer
+      repo:
+        $ref: '#/definitions/github.Repo'
+    type: object
   github.Repository:
     properties:
       id:
@@ -863,6 +870,36 @@ paths:
           schema:
             $ref: '#/definitions/model.OperationResp'
       summary: 获取开发者国籍
+      tags:
+      - Github
+  /github/user/repo:
+    get:
+      consumes:
+      - application/json
+      description: 获取用户的仓库信息
+      parameters:
+      - description: 仓库拥有者
+        in: query
+        name: owner
+        required: true
+        type: string
+      - description: 仓库名
+        in: query
+        name: repo
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/github.RepoResp'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/model.OperationResp'
+      summary: 获取用户的仓库信息
       tags:
       - Github
   /github/user/repos:
