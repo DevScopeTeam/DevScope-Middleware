@@ -45,12 +45,6 @@ func CalculateDeveloperScore(username string) (model.DeveloperRank, error) {
 		return rank, err
 	}
 
-	// 获取开发者的活动数据
-	// events, err := GetUserEvents(username)
-	// if err != nil {
-	// 	return rank, err
-	// }
-
 	// 获取开发者的仓库信息
 	repos, err := GetUserRepos(username)
 	if err != nil {

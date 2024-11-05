@@ -262,3 +262,19 @@ func GetRepoPRCount(owner, repo string) (int, error) {
 
 	return len(prs), nil
 }
+
+// 获取用户所有仓库的描述
+func GetUserRepoDescriptions(username string) (map[string]string, error) {
+	repos, err := GetUserRepos(username)
+	if err != nil {
+		return nil, err
+	}
+
+	descriptions := make(map[string]string)
+
+	for _, repo := range repos {
+		descriptions[repo.Name] = repo.Description
+	}
+
+	return descriptions, nil
+}
