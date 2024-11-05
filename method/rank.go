@@ -61,6 +61,7 @@ func GetRank(username string) (model.DeveloperRank, error) {
 	return rank, nil
 }
 
+// 获取排行榜，按overall排序
 func GetRankList(page, pageSize int) ([]model.DeveloperRank, error) {
 	db, err := getDB()
 	if err != nil {
@@ -70,11 +71,9 @@ func GetRankList(page, pageSize int) ([]model.DeveloperRank, error) {
 	defer sqlDB.Close()
 
 	var ranks []model.DeveloperRank
-	offset := (page - 1) * pageSize
-	if err := db.Offset(offset).Limit(pageSize).Find(&ranks).Error; err != nil {
+	if err := db.Order("overall desc").Offset((page - 1) * pageSize).Limit(pageSize).Find(&ranks).Error; err != nil {
 		return nil, err
 	}
-
 	return ranks, nil
 }
 

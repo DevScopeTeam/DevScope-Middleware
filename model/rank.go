@@ -40,6 +40,12 @@ type DeveloperRank struct {
 	UpdatedAt          XTime   `json:"updated_at,omitempty" gorm:"autoUpdateTime"`     // 更新时间
 }
 
+// RankListResp 表示开发者排名列表的响应
+type RankListResp struct {
+	Code int             `json:"code"`
+	List []DeveloperRank `json:"list"`
+}
+
 // CalculateOverallScore 计算综合评分
 func (s *DeveloperRank) CalculateOverallScore() {
 	// 假设权重分别为：项目重要性0.3，代码贡献0.4，社区影响力0.3

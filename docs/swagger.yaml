@@ -696,6 +696,15 @@ definitions:
       msg:
         type: string
     type: object
+  model.RankListResp:
+    properties:
+      code:
+        type: integer
+      list:
+        items:
+          $ref: '#/definitions/model.DeveloperRank'
+        type: array
+    type: object
   model.XTime:
     properties:
       time.Time:
@@ -809,7 +818,35 @@ paths:
       summary: 获取仓库和语言偏好
       tags:
       - Github
-  /score/get:
+  /rank/list:
+    get:
+      consumes:
+      - application/json
+      description: 获取开发者排名
+      parameters:
+      - description: 页码
+        in: query
+        name: page
+        type: integer
+      - description: 每页数量
+        in: query
+        name: pageSize
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/model.RankListResp'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/model.OperationResp'
+      summary: 获取开发者排名
+      tags:
+      - Rank
+  /rank/score:
     get:
       consumes:
       - application/json
@@ -833,7 +870,7 @@ paths:
             $ref: '#/definitions/model.OperationResp'
       summary: 获取开发者评分
       tags:
-      - Score
+      - Rank
 securityDefinitions:
   ApiKeyAuth:
     in: header

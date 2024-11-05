@@ -167,7 +167,50 @@ const docTemplate = `{
                 }
             }
         },
-        "/score/get": {
+        "/rank/list": {
+            "get": {
+                "description": "获取开发者排名",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Rank"
+                ],
+                "summary": "获取开发者排名",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "页码",
+                        "name": "page",
+                        "in": "query"
+                    },
+                    {
+                        "type": "integer",
+                        "description": "每页数量",
+                        "name": "pageSize",
+                        "in": "query"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/model.RankListResp"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/model.OperationResp"
+                        }
+                    }
+                }
+            }
+        },
+        "/rank/score": {
             "get": {
                 "description": "获取开发者评分",
                 "consumes": [
@@ -177,7 +220,7 @@ const docTemplate = `{
                     "application/json"
                 ],
                 "tags": [
-                    "Score"
+                    "Rank"
                 ],
                 "summary": "获取开发者评分",
                 "parameters": [
@@ -1256,6 +1299,20 @@ const docTemplate = `{
                 },
                 "msg": {
                     "type": "string"
+                }
+            }
+        },
+        "model.RankListResp": {
+            "type": "object",
+            "properties": {
+                "code": {
+                    "type": "integer"
+                },
+                "list": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/model.DeveloperRank"
+                    }
                 }
             }
         },
