@@ -41,6 +41,12 @@ type DeveloperRank struct {
 	UpdatedAt          XTime   `json:"updated_at,omitempty" gorm:"autoUpdateTime"`                     // 更新时间
 }
 
+// DevScoreResp 表示开发者分数的响应
+type DevScoreResp struct {
+	Code  int           `json:"code"`
+	Score DeveloperRank `json:"score"`
+}
+
 // RankListResp 表示开发者排名列表的响应
 type RankListResp struct {
 	Code int             `json:"code"`
