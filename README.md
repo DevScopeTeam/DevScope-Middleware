@@ -11,10 +11,11 @@ config/config.yaml
 mysql:
   DSN: 数据库连接字符串
 
-QINIU:
-  access_key: 七牛云access_key
-  secret_key: 七牛云secret_key
-  bucket: 七牛云存储空间名称
+github:
+  token: GitHub Token
+
+qwen:
+  api_key: QWen API Key
 ```
 
 ## 运行
