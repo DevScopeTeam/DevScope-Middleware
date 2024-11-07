@@ -30,6 +30,6 @@ func init() {
 	db.AutoMigrate(&model.Domain{})
 
 	// 执行原生 SQL 以创建外键
-	// db.Exec("ALTER TABLE domains ADD CONSTRAINT fk_domain_tag FOREIGN KEY (tag_uuid) REFERENCES tags(uuid);")
-	// db.Exec("ALTER TABLE domains ADD CONSTRAINT fk_domain_developer FOREIGN KEY (username) REFERENCES developer_ranks(username);")
+	// db.Exec("ALTER TABLE domains ADD CONSTRAINT fk_domain_tag FOREIGN KEY (tag_uuid) REFERENCES tags(uuid) ON DELETE CASCADE ON UPDATE CASCADE;")
+	// db.Exec("ALTER TABLE domains ADD CONSTRAINT fk_domain_developer FOREIGN KEY (username) REFERENCES developer_ranks(username) ON DELETE CASCADE ON UPDATE CASCADE;")
 }
