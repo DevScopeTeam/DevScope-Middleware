@@ -50,7 +50,7 @@ GET /domain/list
 
 ```json
 {
-  "code": 0,
+  "code": 200,
   "list": [
     {
       "code": 0,
@@ -74,6 +74,36 @@ GET /domain/list
 |200|[OK](https://tools.ietf.org/html/rfc7231#section-6.3.1)|OK|[model.RankListResp](#schemamodel.ranklistresp)|
 |400|[Bad Request](https://tools.ietf.org/html/rfc7231#section-6.5.1)|Bad Request|[model.OperationResp](#schemamodel.operationresp)|
 
+## GET 获取用户的领域
+
+GET /domain/user
+
+获取用户的领域
+
+### 请求参数
+
+|名称|位置|类型|必选|说明|
+|---|---|---|---|---|
+|username|query|string| 是 |用户名|
+
+> 返回示例
+
+> 200 Response
+
+```json
+{
+  "code": 200,
+  "domains": "string"
+}
+```
+
+### 返回结果
+
+|状态码|状态码含义|说明|数据模型|
+|---|---|---|---|
+|200|[OK](https://tools.ietf.org/html/rfc7231#section-6.3.1)|OK|[model.UserDomainResp](#schemamodel.userdomainresp)|
+|400|[Bad Request](https://tools.ietf.org/html/rfc7231#section-6.5.1)|Bad Request|[model.OperationResp](#schemamodel.operationresp)|
+
 ## GET 获取领域下的用户列表
 
 GET /domain/users
@@ -94,7 +124,7 @@ GET /domain/users
 
 ```json
 {
-  "code": 0,
+  "code": 200,
   "list": [
     "string"
   ]
@@ -128,7 +158,7 @@ GET /github/user/events
 
 ```json
 {
-  "code": 0,
+  "code": 200,
   "list": [
     {
       "actor": {
@@ -202,7 +232,7 @@ GET /github/user/info
 
 ```json
 {
-  "code": 0,
+  "code": 200,
   "user": {
     "avatar_url": "string",
     "bio": "string",
@@ -270,7 +300,7 @@ GET /github/user/nation
 
 ```json
 {
-  "code": 0,
+  "code": 200,
   "nation": "string"
 }
 ```
@@ -301,7 +331,7 @@ GET /github/user/repo
 
 ```json
 {
-  "code": 0,
+  "code": 200,
   "repo": {
     "allow_auto_merge": true,
     "allow_forking": true,
@@ -2707,7 +2737,7 @@ GET /github/user/repos
 
 ```json
 {
-  "code": 0,
+  "code": 200,
   "list": [
     {
       "allow_auto_merge": true,
@@ -3815,7 +3845,7 @@ GET /rank/list
 
 ```json
 {
-  "code": 0,
+  "code": 200,
   "list": [
     {
       "code": 0,
@@ -3857,7 +3887,7 @@ GET /rank/score
 
 ```json
 {
-  "code": 0,
+  "code": 200,
   "score": {
     "code": 0,
     "influence": 0,
@@ -3899,7 +3929,7 @@ GET /tag/get
 
 ```json
 {
-  "code": 0,
+  "code": 200,
   "tag": {
     "name": "string",
     "uuid": "string"
@@ -3926,7 +3956,7 @@ GET /tag/list
 
 ```json
 {
-  "code": 0,
+  "code": 200,
   "list": [
     {
       "name": "string",
@@ -4316,7 +4346,7 @@ GET /tag/list
 
 ```json
 {
-  "code": 0,
+  "code": 200,
   "list": [
     {
       "actor": {
@@ -9716,7 +9746,7 @@ GET /tag/list
 
 ```json
 {
-  "code": 0,
+  "code": 200,
   "list": [
     {
       "allow_auto_merge": true,
@@ -10812,7 +10842,7 @@ GET /tag/list
 
 ```json
 {
-  "code": 0,
+  "code": 200,
   "repo": {
     "allow_auto_merge": true,
     "allow_forking": true,
@@ -13618,7 +13648,7 @@ GET /tag/list
 
 ```json
 {
-  "code": 0,
+  "code": 200,
   "user": {
     "avatar_url": "string",
     "bio": "string",
@@ -13704,7 +13734,7 @@ GET /tag/list
 
 ```json
 {
-  "code": 0,
+  "code": 200,
   "nation": "string"
 }
 
@@ -13726,7 +13756,7 @@ GET /tag/list
 
 ```json
 {
-  "code": 0,
+  "code": 200,
   "score": {
     "code": 0,
     "influence": 0,
@@ -13792,7 +13822,7 @@ GET /tag/list
 
 ```json
 {
-  "code": 0,
+  "code": 200,
   "msg": "string"
 }
 
@@ -13814,7 +13844,7 @@ GET /tag/list
 
 ```json
 {
-  "code": 0,
+  "code": 200,
   "list": [
     {
       "code": 0,
@@ -13870,7 +13900,7 @@ GET /tag/list
 
 ```json
 {
-  "code": 0,
+  "code": 200,
   "list": [
     {
       "name": "string",
@@ -13897,7 +13927,7 @@ GET /tag/list
 
 ```json
 {
-  "code": 0,
+  "code": 200,
   "tag": {
     "name": "string",
     "uuid": "string"
@@ -13922,7 +13952,7 @@ GET /tag/list
 
 ```json
 {
-  "code": 0,
+  "code": 200,
   "list": [
     "string"
   ]
