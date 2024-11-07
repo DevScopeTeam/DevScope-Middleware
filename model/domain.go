@@ -20,3 +20,8 @@ type UsernameListResp struct {
 	Code int      `json:"code"`
 	List []string `json:"list"`
 }
+
+type UserDomainResp struct {
+	Code    int    `json:"code"`
+	Domains string `json:"domains"`
+}

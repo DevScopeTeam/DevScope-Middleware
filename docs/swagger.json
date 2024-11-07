@@ -59,6 +59,44 @@
                 }
             }
         },
+        "/domain/user": {
+            "get": {
+                "description": "获取用户的领域",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Domain"
+                ],
+                "summary": "获取用户的领域",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "用户名",
+                        "name": "username",
+                        "in": "query",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/model.UserDomainResp"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/model.OperationResp"
+                        }
+                    }
+                }
+            }
+        },
         "/domain/users": {
             "get": {
                 "description": "获取领域下的用户列表",
@@ -1581,6 +1619,17 @@
                 },
                 "tag": {
                     "$ref": "#/definitions/model.Tag"
+                }
+            }
+        },
+        "model.UserDomainResp": {
+            "type": "object",
+            "properties": {
+                "code": {
+                    "type": "integer"
+                },
+                "domains": {
+                    "type": "string"
                 }
             }
         },

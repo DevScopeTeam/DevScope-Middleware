@@ -742,6 +742,13 @@ definitions:
       tag:
         $ref: '#/definitions/model.Tag'
     type: object
+  model.UserDomainResp:
+    properties:
+      code:
+        type: integer
+      domains:
+        type: string
+    type: object
   model.UsernameListResp:
     properties:
       code:
@@ -795,6 +802,31 @@ paths:
           schema:
             $ref: '#/definitions/model.OperationResp'
       summary: 获取开发者领域排名
+      tags:
+      - Domain
+  /domain/user:
+    get:
+      consumes:
+      - application/json
+      description: 获取用户的领域
+      parameters:
+      - description: 用户名
+        in: query
+        name: username
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/model.UserDomainResp'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/model.OperationResp'
+      summary: 获取用户的领域
       tags:
       - Domain
   /domain/users:

@@ -128,6 +128,32 @@ func GetUsernameListByTagUUID(tag_uuid string, page, pageSize int) ([]string, er
 	return usernames, nil
 }
 
+func GetUserDomains(username string) (string, error) {
+	db, err := getDB()
+	if err != nil {
+		return "", err
+	}
+
+	sqlDB, _ := db.DB()
+	defer sqlDB.Close()
+
+	var domain_tag_list []string
+	if err := db.Model(&model.Domain{}).Where("username = ?", username).Pluck("tag_uuid", &domain_tag_list).Error; err != nil {
+		return "", err
+	}
+
+	var tag_name_list []string
+	for _, tag_uuid := range domain_tag_list {
+		tag, err := GetTag(tag_uuid)
+		if err != nil {
+			return "", err
+		}
+		tag_name_list = append(tag_name_list, tag.Name)
+	}
+
+	return strings.Join(tag_name_list, ", "), nil
+}
+
 func GetUserRankListByTagUUID(tag_uuid string, page, pageSize int) ([]model.DeveloperRank, error) {
 	db, err := getDB()
 	if err != nil {

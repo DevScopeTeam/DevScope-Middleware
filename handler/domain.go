@@ -84,3 +84,37 @@ func GetUserRankListByDomainHandler(c *fiber.Ctx) error {
 		List: ranks,
 	})
 }
+
+// GetUserDoaminsHandler godoc
+//
+//	@Summary		获取用户的领域
+//	@Description	获取用户的领域
+//	@Tags			Domain
+//	@Accept			json
+//	@Produce		json
+//	@Param			username	query		string	true	"用户名"
+//	@Success		200			{object}	model.UserDomainResp
+//	@Failure		400			{object}	model.OperationResp
+//	@Router			/domain/user [get]
+func GetUserDoaminsHandler(c *fiber.Ctx) error {
+	username := c.Query("username")
+	if username == "" {
+		return c.JSON(model.OperationResp{
+			Code: 400,
+			Msg:  "username is empty",
+		})
+	}
+
+	domains, err := method.GetUserDomains(username)
+	if err != nil {
+		return c.JSON(model.OperationResp{
+			Code: 400,
+			Msg:  err.Error(),
+		})
+	}
+
+	return c.JSON(model.UserDomainResp{
+		Code:    200,
+		Domains: domains,
+	})
+}
